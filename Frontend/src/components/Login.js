@@ -1,7 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { BG_URL } from '../utils/constants';
 import {checkValidData} from "../utils/validate";
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {auth} from "../utils/firebase";
+import Header from './Header';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/redux/userSlice';
 const Login = () => {
+    const dispatch = useDispatch();
   const [isSignIn,setIsSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
@@ -18,12 +24,41 @@ const Login = () => {
       setErrorMessage(message);
       if(message) return;
     } 
+    if(!isSignIn)
+    {
+        // Registeration
+        createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        updateProfile(user, {
+          displayName: name.current.value 
+        }).then(() => {
+          const {uid, displayName, email} = auth.currentUser;
+        dispatch(addUser(
+          {
+            uid:uid,
+            displayName: displayName,
+            email:email,
+          }));
+        }).catch((error) => {
+          setErrorMessage(error.message);
+        });
+        
+      })
+      .catch((error) => {
+         const errorCode = error.code;
+         const errorMessage = error.message;
+        setErrorMessage("Account with this email already exists, Try different one!" + errorCode +"-"+ errorMessage);
+      });
+    }
   };
   const ToggleSignInForm = () => {
     setIsSignIn(!isSignIn);
   };
   return (
-    <div>
+    <div className='bg-black' >
+        <Header/>
         <div className='absolute '>
             <img src={BG_URL} 
                 alt="bg_img" className='w-screen'/>
