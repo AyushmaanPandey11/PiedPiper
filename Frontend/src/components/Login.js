@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { BG_URL } from '../utils/constants';
 import {checkValidData} from "../utils/validate";
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import {auth} from "../utils/firebase";
 import Header from './Header';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/redux/userSlice';
+
 const Login = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [isSignIn,setIsSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
@@ -15,7 +16,7 @@ const Login = () => {
   const name = useRef(null);
   const HandleButtonClick = () => {
     if ((email.current && password.current) || (email.current && password.current && name.current)) {
-      const message = checkValidData(
+        const message = checkValidData(
         name.current ? name.current.value : "",
         email.current ? email.current.value : "",
         password.current ? password.current.value : "",
@@ -50,6 +51,20 @@ const Login = () => {
          const errorCode = error.code;
          const errorMessage = error.message;
         setErrorMessage("Account with this email already exists, Try different one!" + errorCode +"-"+ errorMessage);
+      });
+    }
+    else
+    {
+      // SignIn Logic
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+         const errorCode = error.code;
+         const errorMessage = error.message;
+        setErrorMessage("No Accout Exists With given Email or password. Try Again or SignUp." + errorCode +"-"+ errorMessage);
       });
     }
   };
