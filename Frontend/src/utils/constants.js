@@ -1,1 +1,0 @@
-export const LOGO_URL = "https://w7.pngwing.com/pngs/848/250/png-transparent-pied-piper-of-hamelin-computer-icons-pied-piper-leaf-grass-social-media.png";
