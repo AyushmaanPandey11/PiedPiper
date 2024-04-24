@@ -8,7 +8,7 @@ const CurrencySection = () => {
   };
 
   return (
-    <section className="mt-30">
+    <div className="mt-30">
       <h2 className="text-center">Currency Updates</h2>
       <div className="currency-section mt-4 ml-auto px-4 flex flex-col justify-center w-1/2 bg-blue-600 text-white rounded-full cursor-pointer">
         <select id="currency-selector" onChange={updateCurrencyTable} className="border-none outline-none text-lg font-semibold">
@@ -22,7 +22,7 @@ const CurrencySection = () => {
           {/* Currency information will be displayed here */}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

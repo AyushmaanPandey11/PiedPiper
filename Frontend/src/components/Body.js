@@ -3,14 +3,20 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import Error from "./Error";
 const Browse = lazy( () => import("./Browse") );
-
+const About = lazy( () => import("./About") );
 
 const Body = () => {
   const appRouter = createBrowserRouter([
     {
       path: "/",
       element: <Login />,
-      errorElement: <Error />
+      errorElement: <Error />,
+      children: [
+        {
+          path: "/About",
+          element: <Suspense fallback={<Error />}><About /></Suspense>,
+        },
+      ],
     },
     {
       path:"/error",

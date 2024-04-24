@@ -4,11 +4,9 @@ import CurrencySection from './CurrencySection';
 
 const Browse = () => {
   return (
-    <div className="">
+    <div >
       <Header />
-      <div className="mt-50"> 
-        <CurrencySection />
-      </div>
+      <CurrencySection />
     </div>
   );
 };
