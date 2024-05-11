@@ -257,7 +257,7 @@ const getUserCurrency = asyncHandler(async (req, res) => {
 })
 
 
-const updateAccountDetails = asyncHandler(async (req, res) => {
+const updateUserDetails = asyncHandler(async (req, res) => {
     const { username, email } = req.body
 
     if (!username || !email) {
@@ -289,6 +289,6 @@ export {
     changeCurrentPassword,
     changeCurrentPin,
     getCurrentUser,
-    updateAccountDetails,
+    updateUserDetails,
     getUserCurrency
 };

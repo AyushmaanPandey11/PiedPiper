@@ -31,7 +31,7 @@ app.use("/api/v1/accbalance", balanceRouter);
 
 
 // 3. Transaction details routes
-app.use("/api/v1/transaction", transactionRouter);
+app.use("/api/v1/transactionHistory", transactionRouter);
 
 
 
