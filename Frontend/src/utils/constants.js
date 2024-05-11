@@ -10,7 +10,7 @@ export const SUPPORTED_LANG = [
     },
   ];
 
-export const CURRENCY_API_URL = "https://v6.exchangerate-api.com/v6/"+process.env.REACT_APP_CURRENCY_API_KEY+"/pair";
+export const CURRENCY_API_URL = `https://v6.exchangerate-api.com/v6/${process.env.REACT_APP_CURRENCY_API_KEY}/pair`;
 
 export const CurrencyPairs = [
   {

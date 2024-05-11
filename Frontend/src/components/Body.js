@@ -11,12 +11,6 @@ const Body = () => {
       path: "/",
       element: <Login />,
       errorElement: <Error />,
-      children: [
-        {
-          path: "/About",
-          element: <Suspense fallback={<Error />}><About /></Suspense>,
-        },
-      ],
     },
     {
       path:"/error",
@@ -27,6 +21,10 @@ const Body = () => {
         path:"/browse",
         element:<Suspense fallback={<Error />}><Browse /></Suspense>,
     },
+    {
+      path: "/about",
+      element: <Suspense fallback={<Error />}><About /></Suspense>,
+    }
     
   ]);
 

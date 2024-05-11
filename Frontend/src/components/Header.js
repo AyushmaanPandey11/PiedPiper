@@ -39,7 +39,7 @@ const Header = () => {
             displayName: displayName,
             email:email,
           }));
-        navigate("/browse");
+        // navigate("/browse");
       } else {
         //Sign out
         dispatch(removeUser());
@@ -60,8 +60,8 @@ const Header = () => {
           <div className="flex items-center text-white" >
           <ul className="flex p-4  font-bold text-lg" >
               <li className="px-5">{lang[langKey].Status}: { OnlineStatus ? "✔️":"❌" }</li>
-              <li className="px-5"><Link to="/Browse">{lang[langKey].Home}</Link></li>
-              <li className="px-5"><Link to="/About">{lang[langKey].About}</Link></li>
+              <li className="px-5"><Link to="/browse">{lang[langKey].Home}</Link></li>
+              <li className="px-5"><Link to="/about">{lang[langKey].About}</Link></li>
               <li className="px-5 hover:underline"><Link to="/Profile" >{ user?.displayName }</Link></li>
           </ul>
           <button onClick={handleSignout} className='px-5 -ml-12  font-bold text-white hover:underline'>
