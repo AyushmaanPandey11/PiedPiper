@@ -10,7 +10,7 @@ const userSchema = new Schema(
             unique: true,
             lowercase: true,
             trim: true, 
-            index: true
+            
         },
         email: {
             type: String,
@@ -18,15 +18,25 @@ const userSchema = new Schema(
             unique: true,
             lowercase: true,
             trim: true, 
+            index: true
         },
         
         phone_no:{
             type:Number,
             required:true,
+            unique: true
         },
         password: {
             type: String,
             required: [true, 'Password is required']
+        },
+        pin: {
+            type: Number,
+            required: [true, 'Transaction Pin is required']
+        },
+        currency : {
+            type: String,
+            required: [true, 'Currency is required']
         },
         refreshToken: {
             type: String
@@ -54,7 +64,6 @@ userSchema.methods.generateAccessToken = function(){
             _id: this._id,
             email: this.email,
             username: this.username,
-            fullName: this.fullName
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
