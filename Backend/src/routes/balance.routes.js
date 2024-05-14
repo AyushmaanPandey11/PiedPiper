@@ -4,8 +4,8 @@ import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.route("/getAccBalance").get(verifyJWT, getUserBalance);
-router.route("/update").patch(verifyJWT,updateBalance);
-router.route("/transact").post(verifyJWT,makeTransaction);
+router.get("/getAccBalance",verifyJWT, getUserBalance);
+router.patch("/update",verifyJWT,updateBalance);
+router.post("/transact",verifyJWT,makeTransaction);
 
 export default balanceRouter;

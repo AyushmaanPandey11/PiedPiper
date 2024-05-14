@@ -1,5 +1,5 @@
 export const BG_URL = "https://treasurup.com/assets/uploads/cross-border-payments-banks-banking-treasurup-commercial-banking-open-1.jpg";
-export const LOGO_URL = "https://i.redd.it/53268bjfdyoy.jpg";
+export const LOGO_URL = "https://banner2.cleanpng.com/20180622/rjc/kisspng-pied-piper-of-hamelin-gilfoyle-computer-icons-5b2d71323e6e76.4254386115297047542557.jpg";
 
 export const SUPPORTED_LANG = [
     {

@@ -35,10 +35,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const {  email, username, password, pin, currency } = req.body
 
-    if (
-        [pin,currency, email, username, password].some((field) => field?.trim() === "")
-    ) {
-        throw new ApiError(400, "All fields are required")
+    if ([pin,currency, email, username, password].some((field) => field?.trim() === "")) 
+    {
+        throw new ApiError(400, "All fields are required");
     }
 
     const existedUser = await User.findOne({
@@ -46,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists")
+        throw new ApiError(400, "User with email or username already exists")
     }
 
     const user = await User.create({
@@ -224,7 +223,8 @@ const changeCurrentPin = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user?._id)
     const isPinCorrect = await user.isPasswordCorrect(oldPin)
 
-    if (!isPasswordCorrect) {
+
+    if (!isPinCorrect) {
         throw new ApiError(400, "Invalid old password")
     }
 
@@ -233,7 +233,7 @@ const changeCurrentPin = asyncHandler(async (req, res) => {
 
     return res
         .status(200)
-        .json(new ApiResponse(200, {}, "Pin changed successfully"))
+        .json(new ApiResponse(200,"Pin changed successfully"))
 })
 
 const getCurrentUser = asyncHandler(async (req, res) => {

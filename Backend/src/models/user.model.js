@@ -6,24 +6,22 @@ const userSchema = new Schema(
     {
         username: {
             type: String,
-            required: true,
-            unique: true,
+            required: [true, 'username is required'],
             lowercase: true,
             trim: true, 
             
         },
         email: {
             type: String,
-            required: true,
+            required: [true, 'Email is required'],
             unique: true,
             lowercase: true,
-            trim: true, 
-            index: true
+            trim: true
         },
         
         phone_no:{
             type:Number,
-            required:true,
+            required:[true, 'Phone no is required'],
             unique: true
         },
         password: {
@@ -54,6 +52,13 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
+userSchema.pre("save", async function (next) {
+    if(!this.isModified("pin")) return next();
+
+    this.pin =  bcrypt.hash(this.pin, 10)
+    next()
+})
+ 
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }

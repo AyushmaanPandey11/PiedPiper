@@ -6,16 +6,16 @@ import { changeCurrentPassword, changeCurrentPin,
 
 const router = Router()
 
-router.route("/register").post(registerUser);
-router.route("/login").post(loginUser);
+router.post("/register",registerUser);
+router.post("/login",loginUser);
 
 // secure Routes
-router.route("/logout").post(verifyJwt,logoutUser);
-router.route("/refresh-token").post(refreshAccessToken);
-router.route("/change-password").patch(verifyJwt,changeCurrentPassword);
-router.route("/change-pin").patch(verifyJwt,changeCurrentPin);
-router.route("/current-user").get(verifyJwt,getCurrentUser);
-router.route("/current-currency").get(verifyJwt,getUserCurrency);
-router.route("/update-account").patch(verifyJwt,updateUserDetails);
+router.post("/logout",verifyJwt,logoutUser);
+router.post("/refresh-token",refreshAccessToken);
+router.patch("/change-password",verifyJwt,changeCurrentPassword);
+router.patch("/change-pin",verifyJwt,changeCurrentPin);
+router.get("/current-user",verifyJwt,getCurrentUser);
+router.get("/current-currency",verifyJwt,getUserCurrency);
+router.patch("/update-account",verifyJwt,updateUserDetails);
 
 export default userRouter;

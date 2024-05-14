@@ -6,14 +6,18 @@ import {auth} from "../utils/firebase";
 import Header from './Header';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSignIn,setIsSignIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
+  const currency = useRef(null);
+  const pin = useRef(null);
   const HandleButtonClick = () => {
     if ((email.current && password.current) || (email.current && password.current && name.current)) {
         const message = checkValidData(
@@ -42,6 +46,7 @@ const Login = () => {
             displayName: displayName,
             email:email,
           }));
+          
         }).catch((error) => {
           setErrorMessage(error.message);
         });
@@ -72,17 +77,18 @@ const Login = () => {
     setIsSignIn(!isSignIn);
   };
   return (
-    <div className='bg-black' >
+    <div className='bg-black absolute z-10' >
         <Header/>
-        <div className='absolute '>
+        <div className='absolute  '>
             <img src={BG_URL} 
                 alt="bg_img" className='w-screen'/>
       </div>
       <form 
         onSubmit={(e) => e.preventDefault()}
-        className='w-3/12 absolute p-12 my-64 text-white bg-black mx-auto left-0 right-0 bg-opacity-75 rounded-md'  >
+        className='w-3/12 absolute p-12 my-20 text-white bg-black mx-auto left-0 right-0 bg-opacity-75 rounded-md'  >
           <h1 className='font-bold text-3xl py-4'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
           { !isSignIn && <input ref={name} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your Name'></input>}
+          { !isSignIn && <input ref={currency} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your Currency'></input>}
           <input 
             ref={email}
             className='my-4 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your Email Address'>
@@ -91,6 +97,7 @@ const Login = () => {
             ref={password}
             className='my-4 p-4 w-full bg-gray-600 ' type='password' placeholder='Enter Password'>
             </input>
+          { !isSignIn && <input ref={pin} className='my-6 p-4 w-full bg-gray-600 ' type='password' placeholder='Enter Your Pin'></input>}
             <p className='text-red-700 font-bold py-2'>{errorMessage}</p>
           <button className='my-4 p-4 w-full bg-blue-700' onClick={HandleButtonClick} >{isSignIn ? "Sign In" : "Sign Up"}
           </button>
