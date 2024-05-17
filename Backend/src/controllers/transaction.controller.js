@@ -73,6 +73,4 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
 
 });
 
-
-
 export { getTransactionDetails };

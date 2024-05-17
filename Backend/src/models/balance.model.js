@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "./user.model.js";
 import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
 import { Transaction } from "./transaction.model.js";
 
 const balanceSchema = new Schema({
@@ -13,6 +12,9 @@ const balanceSchema = new Schema({
         type: Number,
         default: 1000
     }
+},
+{
+    timestamps:true
 });
 
 balanceSchema.methods.updateBalance = async function(userId, newBalance) {
@@ -68,6 +70,8 @@ balanceSchema.methods.getBalance = async function(userId) {
 };
 
 
+
+
 balanceSchema.methods.addTransactionDetails = async function(senderId, receiverId, amount, reason) {
     try {
         // Create a new transaction document
@@ -83,7 +87,7 @@ balanceSchema.methods.addTransactionDetails = async function(senderId, receiverI
 
         return newTransaction;
     } catch (error) {
-        throw new ApiError(400, "Error in adding the transaction details");
+        throw new ApiError(500, "Error in adding the transaction details");
     }
 };
 

@@ -3,17 +3,24 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import { Balance } from "../models/balance.model.js";
 
-const generateAccessAndRefereshTokens = async (userId) => {
+const generateAccessAndRefereshTokens = async(userId) =>{
     try {
         const user = await User.findById(userId)
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
+        user.refreshToken = refreshToken;
+        //await user.save({ validateBeforeSave: false });
+        try {
+            await user.save({ validateBeforeSave: false });
+        } catch (error) {
+            console.error('Error saving user with refreshToken:', error);
+            throw new ApiError(500, "Error saving user with refreshToken");
+        }
+        
 
-        user.refreshToken = refreshToken
-        await user.save({ validateBeforeSave: false })
-
-        return { accessToken, refreshToken }
+        return {accessToken, refreshToken}
 
 
     } catch (error) {
@@ -21,19 +28,33 @@ const generateAccessAndRefereshTokens = async (userId) => {
     }
 }
 
+const createUserBalance = async function(userId){
+    try {
+        const existingBalance = await Balance.findOne({ user: userId });
+        if (existingBalance) {
+            throw new ApiError(400, "Balance already exists for the user");
+        }
+        else
+        {
+            const newUserBalance = await Balance.create({
+                user: userId,
+                accountBalance: 1000  
+            });
+
+            if(!newUserBalance){
+                await User.deleteOne({ _id: userId});
+                throw new ApiError(500, "Failed to create user balance");
+            }
+            return newUserBalance;
+        }
+    } catch(error) {
+        throw new ApiError(400, "Error adding user Balance");
+    }
+};
+
 const registerUser = asyncHandler(async (req, res) => {
-    // get user details from frontend
-    // validation - not empty
-    // check if user already exists: username, email
-    // check for images, check for avatar
-    // upload them to cloudinary, avatar
-    // create user object - create entry in db
-    // remove password and refresh token field from response
-    // check for user creation
-    // return res
 
-
-    const {  email, username, password, pin, currency } = req.body
+    const { email, username, password, pin, currency } = req.body;
 
     if ([pin,currency, email, username, password].some((field) => field?.trim() === "")) 
     {
@@ -53,7 +74,7 @@ const registerUser = asyncHandler(async (req, res) => {
         password,
         username: username.toLowerCase(),
         currency,
-        pin
+        pin,
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -63,6 +84,9 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!createdUser) {
         throw new ApiError(500, "Something went wrong while registering the user")
     }
+    await generateAccessAndRefereshTokens(user?._id)
+    await createUserBalance(createdUser._id);
+    
 
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered Successfully")
@@ -80,7 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { email, username, password } = req.body;
 
-    if (!username && !email) {
+    if (!username || !email) {
         throw new ApiError(400, "username or email is required")
     }
 
@@ -93,13 +117,11 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password)
-
     if (!isPasswordValid) {
         throw new ApiError(401, "Invalid user credentials")
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user._id)
-
+    const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(user?._id)
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken -pin")
 
     const options = {
@@ -126,7 +148,6 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
-
         {
             $unset: {
                 refreshToken: 1 // this removes the field from document
@@ -141,7 +162,6 @@ const logoutUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true
     }
-    console.log("user fount ")
     return res
         .status(200)
         .clearCookie("accessToken", options)
@@ -219,13 +239,11 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 const changeCurrentPin = asyncHandler(async (req, res) => {
     const { oldPin, newPin } = req.body;
-
+    console.log(oldPin, newPin);
     const user = await User.findById(req.user?._id)
-    const isPinCorrect = await user.isPasswordCorrect(oldPin)
-
-
+    const isPinCorrect = await user.isPinCorrect(oldPin)
     if (!isPinCorrect) {
-        throw new ApiError(400, "Invalid old password")
+        throw new ApiError(400, "Invalid old Pin")
     }
 
     user.pin = newPin;
@@ -255,7 +273,6 @@ const getUserCurrency = asyncHandler(async (req, res) => {
             "User fetched successfully"
         ));
 })
-
 
 const updateUserDetails = asyncHandler(async (req, res) => {
     const { username, email } = req.body

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getTransactionDetails } from "../controllers/transaction.controller";
-import { verifyJWT } from "../middlewares/auth.middleware";
+import { getTransactionDetails } from "../controllers/transaction.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -8,4 +8,4 @@ const router = Router();
 
 router.get("/getTransactionDetails",verifyJWT,getTransactionDetails);
 
-export default transactionRouter;
+export default router;

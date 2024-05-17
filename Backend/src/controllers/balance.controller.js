@@ -3,13 +3,14 @@ import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Balance } from "../models/balance.model.js";
 import axios from "axios";
+import mongoose from "mongoose";
 
 const getUserBalance = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
 
     const balance = await Balance.aggregate([
         {
-            $match: { user: mongoose.Types.ObjectId(userId) } 
+            $match: { user: new mongoose.Types.ObjectId(userId) } 
         },
         {
             $lookup: {
