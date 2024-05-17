@@ -60,37 +60,44 @@ const registerUser = asyncHandler(async (req, res) => {
     {
         throw new ApiError(400, "All fields are required");
     }
+    try{
+        const existedUser = await User.findOne({
+            $or: [{ username }, { email }]
+        })
 
-    const existedUser = await User.findOne({
-        $or: [{ username }, { email }]
-    })
+        if (existedUser) {
+            throw new ApiError(400, "User with email or username already exists")
+        }
 
-    if (existedUser) {
-        throw new ApiError(400, "User with email or username already exists")
+        const user = await User.create({
+            email,
+            password,
+            username: username.toLowerCase(),
+            currency,
+            pin,
+        })
+
+        const createdUser = await User.findById(user._id).select(
+            "-password -refreshToken -pin"
+        )
+
+        if (!createdUser) {
+            throw new ApiError(500, "Something went wrong while registering the user")
+        }
+        await generateAccessAndRefereshTokens(user?._id)
+        await createUserBalance(createdUser._id);
+        
+
+        return res.status(201).json(
+            new ApiResponse(200, createdUser, "User registered Successfully")
+        )
     }
-
-    const user = await User.create({
-        email,
-        password,
-        username: username.toLowerCase(),
-        currency,
-        pin,
-    })
-
-    const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken -pin"
-    )
-
-    if (!createdUser) {
-        throw new ApiError(500, "Something went wrong while registering the user")
+    catch (error) {
+        if (error.code === 11000) { // Handle MongoDB duplicate key error
+            throw new ApiError(400, "Duplicate key error: user with this email or username already exists");
+        }
+        throw new ApiError(500, "Something went wrong while registering the user");
     }
-    await generateAccessAndRefereshTokens(user?._id)
-    await createUserBalance(createdUser._id);
-    
-
-    return res.status(201).json(
-        new ApiResponse(200, createdUser, "User registered Successfully")
-    )
 
 })
 

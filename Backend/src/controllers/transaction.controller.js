@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Transaction } from "../models/transaction.model.js";
+import mongoose from "mongoose";
 
 
 const getTransactionDetails = asyncHandler(async (req, res) => {
@@ -27,7 +28,7 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
         },
         {
             $match: {
-                sender: mongoose.Types.ObjectId(userId)
+                sender: new mongoose.Types.ObjectId(userId)
             }
         },
         {
@@ -48,7 +49,7 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
                     // Filter credited transactions
                     {
                         $match: {
-                            receiver: mongoose.Types.ObjectId(userId)
+                            receiver: new mongoose.Types.ObjectId(userId)
                         }
                     },
                     {
