@@ -4,31 +4,12 @@ import { CurrencyPairs } from '../utils/constants';
 import { Link } from 'react-router-dom';
 
 const Pay = () => {
-  const receiverIdRef = useRef('');
-  const [receiverUsername, setReceiverUsername] = useState('');
-  const currencyRef = useRef('USD');
+  const receiverRef = useRef('');
+  const currencyRef = useRef('');
   const amountRef = useRef('');
   const pinRef = useRef('');
   const [isLoading, setIsLoading] = useState(false);
   const [transactionResult, setTransactionResult] = useState(null);
-
-  useEffect(() => {
-    fetchCurrencies();
-  }, []);
-
-  const fetchCurrencies = async () => {
-    //
-  };
-
-  const handleReceiverIdChange = async (e) => {
-    const id = e.target.value;
-    receiverIdRef.current = id;
-    if (id) {
-      setReceiverUsername('exampleUsername'); 
-    } else {
-      setReceiverUsername('');
-    }
-  };
 
   const handlePinChange = (e) => {
     const value = e.target.value;
@@ -69,25 +50,14 @@ const Pay = () => {
         <h1 className="text-3xl font-bold mb-4 text-center">Make a Transaction</h1>
         <form onSubmit={handleTransaction}>
           <div className="mb-4">
-            <label className="block text-gray-700">Receiver ID</label>
+            <label className="block text-gray-700">Receiver Username</label>
             <input
               type="text"
-              onChange={handleReceiverIdChange}
+              ref={receiverRef}
               className="mt-1 p-2 border border-gray-300 rounded w-full"
               required
             />
           </div>
-          {receiverUsername && (
-            <div className="mb-4">
-              <label className="block text-gray-700">Receiver Username</label>
-              <input
-                type="text"
-                value={receiverUsername}
-                readOnly
-                className="mt-1 p-2 border border-transparent rounded w-full bg-gray-100"
-              />
-            </div>
-          )}
           <div className="mb-4">
             <label className="block text-gray-700">Currency</label>
             <select
@@ -143,7 +113,7 @@ const Pay = () => {
           </div>
         )}
         <div className='bg-green-700 text-white w-2/5 p-3 rounded-md my-5 mx-32 font-bold' >
-        <Link to="/browse"><button className='mx-8'>Home page</button></Link>
+          <Link to="/browse"><button className='mx-8'>Home page</button></Link>
         </div>
       </div>
     </div>

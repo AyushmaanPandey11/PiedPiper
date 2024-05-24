@@ -21,13 +21,14 @@ const Header = () => {
   };
 
   return (
-    <div className=' bg-blue-600 w-screen px-8  bg-gradient-to-b from-black  flex justify-between'>
+    <div className=' bg-blue-600 w-screen px-8  bg-gradient-to-t from-blue-950  flex justify-between'>
       <div className="h-28" >
         <img className='w-30 h-full  ' 
         src="./LOGO.jpg" alt='LOGO_IMG' />
       </div>
-      { user && 
-          <div className="flex items-center text-white" >
+      
+        <div className='flex' >
+          { (user) &&  <div className="flex items-center text-white" >
           <ul className="flex p-4  font-bold text-lg" >
               <li className="px-5">{lang[langKey].Status}: { OnlineStatus ? "✔️":"❌" }</li>
               <li className="px-5"><Link to="/browse">{lang[langKey].Home}</Link></li>
@@ -39,16 +40,15 @@ const Header = () => {
           <button  onClick={handleLogout} className='px-5 -ml-12  font-bold text-white hover:underline'>
               {lang[langKey].LogOut}
               </button>
-          { user && <select className='px-5 -mt-0 font-bold h-10 bg-blue-900 border-none text-white' onChange={handleLangChange}  >
-            {
-              SUPPORTED_LANG.map( 
-                lang => <option  key={lang.identifier} value={lang.identifier}>{lang.name}
-                        </option>  )
-            }
-            </select>
+          </div>}
+          <select className='px-5 mt-10 font-bold h-10 bg-blue-900 border-none text-white' onChange={handleLangChange}  >
+          {
+            SUPPORTED_LANG.map( 
+              lang => <option  key={lang.identifier} value={lang.identifier}>{lang.name}
+                      </option>  )
           }
-          </div>
-      }
+          </select>
+        </div>
     </div>
   )
 }

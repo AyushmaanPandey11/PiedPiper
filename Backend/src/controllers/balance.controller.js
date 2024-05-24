@@ -5,6 +5,7 @@ import { Balance } from "../models/balance.model.js";
 import axios from "axios";
 import mongoose from "mongoose";
 import { Transaction } from "../models/transaction.model.js";
+import { CURRENCY_API_URI } from "../constants.js";
 
 const getUserBalance = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
@@ -98,13 +99,12 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
 
 
 const makeTransaction = asyncHandler(async (req, res) => {
-    const { receiverId, amount, currency, reason } = req.body;
-    const senderId = req.user?._id;
+    const { receiverId, amount, currency, reason } = req?.body;
+    const senderId = req.body.user?._id;
     
     if (!(receiverId && senderId && amount && currency && reason)) {
         throw new ApiError(400, "Please enter all the details");
     }
-    
     const senderBalance = await getBalance(senderId);
     const receiverBalance = await getBalance(receiverId);
     let updateBalanceSender;
@@ -115,16 +115,15 @@ const makeTransaction = asyncHandler(async (req, res) => {
         if (senderBalance - amount < 0) {
             throw new ApiError(400, "Transaction not possible. Insufficient Balance");
         }
-        updateBalanceSender = senderBalance - amount;
+        updateBalanceSender = senderBalance - Number(amount);
     } else {
-        // Make API call to get conversion rate
-        const response = await axios.get(`${CURRENCY_API_URL}/${currency}/USD`);
+        const response = await axios.get(`${CURRENCY_API_URI}/${currency}/USD`);
         const conversionRate = response?.data?.conversion_rate;
         convertedAmount = amount * conversionRate;
         if (senderBalance - convertedAmount < 0) {
             throw new ApiError(400, "Transaction not possible. Insufficient Balance");
         }
-        updateBalanceSender = senderBalance - convertedAmount;
+        updateBalanceSender = senderBalance - Number(convertedAmount);
     }
 
     // Update sender balance
