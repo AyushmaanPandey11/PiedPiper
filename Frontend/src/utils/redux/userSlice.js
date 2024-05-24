@@ -6,6 +6,7 @@ const userSlice = createSlice(
         initialState : {
             lang : 'eng',
             userDetail : [],
+            balance : null,
         },
         reducers : {
             addUser : (state,action) => {
@@ -16,12 +17,15 @@ const userSlice = createSlice(
             },
             changeLanguage : (state,action) => {
                 state.lang = action.payload;
+            },
+            addBalance: (state,action) => {
+                state.balance= action.payload;
             }
         }
     }
 );
 
-export const { addUser, removeUser,changeLanguage } = userSlice.actions;
+export const { addUser, removeUser,changeLanguage, addBalance } = userSlice.actions;
 export const  userReducer = userSlice.reducer;
 
 export default userSlice.reducer;

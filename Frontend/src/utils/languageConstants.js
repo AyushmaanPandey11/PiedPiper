@@ -9,7 +9,8 @@ const lang = {
         ToCurrency:"To Currency:",
         Amount: "Amount",
         Convert : "Convert",
-        Profile: "Profile"
+        Profile: "Profile",
+        Pay : "Pay"
     },
     hindi: {
         CurrencyConverter : "मुद्रा परिवर्तक",
@@ -21,7 +22,8 @@ const lang = {
         ToCurrency: "मुद्रा के लिए: ",
         Amount :"मात्रा",
         Convert : "परिवर्तन",
-        Profile: "पार्श्वचित्र"
+        Profile: "पार्श्वचित्र",
+        Pay: "वेतन"
     },
 
 };

@@ -9,7 +9,6 @@ const useCurrencyConversion = ({ fromCurrency, toCurrency }) => {
   useEffect(() => {
     const convertCurrency = async () => {
       try {
-        console.log(`${CURRENCY_API_URL}/${fromCurrency}/${toCurrency}`);
         const response = await axios.get(
           `${CURRENCY_API_URL}/${fromCurrency}/${toCurrency}`
         );

@@ -11,8 +11,6 @@ const CurrencySection = () => {
   const [amount, setAmount] = useState('');
   const [convertedAmount, setConvertedAmount] = useState(null);
   const conversionrate=useCurrencyConversion({fromCurrency,toCurrency});
-  // console.log(fromCurrency);
-  // console.log(toCurrency);
   const handleFromCurrencyChange = (event) => {
     setFromCurrency(event.target.value);
   };
