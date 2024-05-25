@@ -14,651 +14,815 @@ export const CURRENCY_API_URL = `https://v6.exchangerate-api.com/v6/${process.en
 export const CurrencyPairs = [
   {
     identifier: "EUR",
-    name: "Euro"
+    name: "Euro",
+    symbol: "€"
   },
   {
     identifier: "AED",
-    name: "United Arab Emirates Dirham"
+    name: "United Arab Emirates Dirham",
+    symbol: "د.إ"
   },
   {
     identifier: "AFN",
-    name: "Afghan Afghani"
+    name: "Afghan Afghani",
+    symbol: "؋"
   },
   {
     identifier: "ALL",
-    name: "Albanian Lek"
+    name: "Albanian Lek",
+    symbol: "L"
   },
   {
     identifier: "AMD",
-    name: "Armenian Dram"
+    name: "Armenian Dram",
+    symbol: "֏"
   },
   {
     identifier: "ANG",
-    name: "Netherlands Antillean Guilder"
+    name: "Netherlands Antillean Guilder",
+    symbol: "ƒ"
   },
   {
     identifier: "AOA",
-    name: "Angolan Kwanza"
+    name: "Angolan Kwanza",
+    symbol: "Kz"
   },
   {
     identifier: "ARS",
-    name: "Argentine Peso"
+    name: "Argentine Peso",
+    symbol: "$"
   },
   {
     identifier: "AUD",
-    name: "Australian Dollar"
+    name: "Australian Dollar",
+    symbol: "A$"
   },
   {
     identifier: "AWG",
-    name: "Aruban Florin"
+    name: "Aruban Florin",
+    symbol: "ƒ"
   },
   {
     identifier: "AZN",
-    name: "Azerbaijani Manat"
+    name: "Azerbaijani Manat",
+    symbol: "₼"
   },
   {
     identifier: "BAM",
-    name: "Bosnia-Herzegovina Convertible Mark"
+    name: "Bosnia-Herzegovina Convertible Mark",
+    symbol: "KM"
   },
   {
     identifier: "BBD",
-    name: "Barbadian Dollar"
+    name: "Barbadian Dollar",
+    symbol: "Bds$"
   },
   {
     identifier: "BDT",
-    name: "Bangladeshi Taka"
+    name: "Bangladeshi Taka",
+    symbol: "৳"
   },
   {
     identifier: "BGN",
-    name: "Bulgarian Lev"
+    name: "Bulgarian Lev",
+    symbol: "лв"
   },
   {
     identifier: "BHD",
-    name: "Bahraini Dinar"
+    name: "Bahraini Dinar",
+    symbol: ".د.ب"
   },
   {
     identifier: "BIF",
-    name: "Burundian Franc"
+    name: "Burundian Franc",
+    symbol: "FBu"
   },
   {
     identifier: "BMD",
-    name: "Bermudian Dollar"
+    name: "Bermudian Dollar",
+    symbol: "$"
   },
   {
     identifier: "BND",
-    name: "Brunei Dollar"
+    name: "Brunei Dollar",
+    symbol: "B$"
   },
   {
     identifier: "BOB",
-    name: "Bolivian Boliviano"
+    name: "Bolivian Boliviano",
+    symbol: "Bs."
   },
   {
     identifier: "BRL",
-    name: "Brazilian Real"
+    name: "Brazilian Real",
+    symbol: "R$"
   },
   {
     identifier: "BSD",
-    name: "Bahamian Dollar"
+    name: "Bahamian Dollar",
+    symbol: "B$"
   },
   {
     identifier: "BTN",
-    name: "Bhutanese Ngultrum"
+    name: "Bhutanese Ngultrum",
+    symbol: "Nu."
   },
   {
     identifier: "BWP",
-    name: "Botswana Pula"
+    name: "Botswana Pula",
+    symbol: "P"
   },
   {
     identifier: "BYN",
-    name: "Belarusian Ruble"
+    name: "Belarusian Ruble",
+    symbol: "Br"
   },
   {
     identifier: "BZD",
-    name: "Belize Dollar"
+    name: "Belize Dollar",
+    symbol: "BZ$"
   },
   {
     identifier: "CAD",
-    name: "Canadian Dollar"
+    name: "Canadian Dollar",
+    symbol: "C$"
   },
   {
     identifier: "CDF",
-    name: "Congolese Franc"
+    name: "Congolese Franc",
+    symbol: "FC"
   },
   {
     identifier: "CHF",
-    name: "Swiss Franc"
+    name: "Swiss Franc",
+    symbol: "CHF"
   },
   {
     identifier: "CLP",
-    name: "Chilean Peso"
+    name: "Chilean Peso",
+    symbol: "$"
   },
   {
     identifier: "CNY",
-    name: "Chinese Yuan"
+    name: "Chinese Yuan",
+    symbol: "¥"
   },
   {
     identifier: "COP",
-    name: "Colombian Peso"
+    name: "Colombian Peso",
+    symbol: "$"
   },
   {
     identifier: "CRC",
-    name: "Costa Rican Colón"
+    name: "Costa Rican Colón",
+    symbol: "₡"
   },
   {
     identifier: "CUP",
-    name: "Cuban Peso"
+    name: "Cuban Peso",
+    symbol: "$"
   },
   {
     identifier: "CVE",
-    name: "Cape Verdean Escudo"
+    name: "Cape Verdean Escudo",
+    symbol: "$"
   },
   {
     identifier: "CZK",
-    name: "Czech Koruna"
+    name: "Czech Koruna",
+    symbol: "Kč"
   },
   {
     identifier: "DJF",
-    name: "Djiboutian Franc"
+    name: "Djiboutian Franc",
+    symbol: "Fdj"
   },
   {
     identifier: "DKK",
-    name: "Danish Krone"
+    name: "Danish Krone",
+    symbol: "kr"
   },
   {
     identifier: "DOP",
-    name: "Dominican Peso"
+    name: "Dominican Peso",
+    symbol: "RD$"
   },
   {
     identifier: "DZD",
-    name: "Algerian Dinar"
+    name: "Algerian Dinar",
+    symbol: "د.ج"
   },
   {
     identifier: "EGP",
-    name: "Egyptian Pound"
+    name: "Egyptian Pound",
+    symbol: "£"
   },
   {
     identifier: "ERN",
-    name: "Eritrean Nakfa"
+    name: "Eritrean Nakfa",
+    symbol: "Nfk"
   },
   {
     identifier: "ETB",
-    name: "Ethiopian Birr"
+    name: "Ethiopian Birr",
+    symbol: "Br"
   },
   {
     identifier: "FJD",
-    name: "Fijian Dollar"
+    name: "Fijian Dollar",
+    symbol: "FJ$"
   },
   {
     identifier: "FKP",
-    name: "Falkland Islands Pound"
+    name: "Falkland Islands Pound",
+    symbol: "£"
   },
   {
     identifier: "FOK",
-    name: "Faroese Króna"
+    name: "Faroese Króna",
+    symbol: "kr"
   },
   {
     identifier: "GBP",
-    name: "British Pound Sterling"
+    name: "British Pound Sterling",
+    symbol: "£"
   },
   {
     identifier: "GEL",
-    name: "Georgian Lari"
+    name: "Georgian Lari",
+    symbol: "₾"
   },
   {
     identifier: "GGP",
-    name: "Guernsey Pound"
+    name: "Guernsey Pound",
+    symbol: "£"
   },
   {
     identifier: "GHS",
-    name: "Ghanaian Cedi"
+    name: "Ghanaian Cedi",
+    symbol: "₵"
   },
   {
     identifier: "GIP",
-    name: "Gibraltar Pound"
+    name: "Gibraltar Pound",
+    symbol: "£"
   },
   {
     identifier: "GMD",
-    name: "Gambian Dalasi"
+    name: "Gambian Dalasi",
+    symbol: "D"
   },
   {
     identifier: "GNF",
-    name: "Guinean Franc"
+    name: "Guinean Franc",
+    symbol: "FG"
   },
   {
     identifier: "GTQ",
-    name: "Guatemalan Quetzal"
+    name: "Guatemalan Quetzal",
+    symbol: "Q"
   },
   {
     identifier: "GYD",
-    name: "Guyanaese Dollar"
+    name: "Guyanaese Dollar",
+    symbol: "G$"
   },
   {
     identifier: "HKD",
-    name: "Hong Kong Dollar"
+    name: "Hong Kong Dollar",
+    symbol: "HK$"
   },
   {
     identifier: "HNL",
-    name: "Honduran Lempira"
+    name: "Honduran Lempira",
+    symbol: "L"
   },
   {
     identifier: "HRK",
-    name: "Croatian Kuna"
+    name: "Croatian Kuna",
+    symbol: "kn"
   },
   {
     identifier: "HTG",
-    name: "Haitian Gourde"
+    name: "Haitian Gourde",
+    symbol: "G"
   },
   {
     identifier: "HUF",
-    name: "Hungarian Forint"
+    name: "Hungarian Forint",
+    symbol: "Ft"
   },
   {
     identifier: "IDR",
-    name: "Indonesian Rupiah"
+    name: "Indonesian Rupiah",
+    symbol: "Rp"
   },
   {
     identifier: "ILS",
-    name: "Israeli New Shekel"
+    name: "Israeli New Shekel",
+    symbol: "₪"
   },
   {
     identifier: "IMP",
-    name: "Isle of Man Pound"
+    name: "Isle of Man Pound",
+    symbol: "£"
   },
   {
     identifier: "INR",
-    name: "Indian Rupee"
+    name: "Indian Rupee",
+    symbol: "₹"
   },
   {
     identifier: "IQD",
-    name: "Iraqi Dinar"
+    name: "Iraqi Dinar",
+    symbol: "ع.د"
   },
   {
     identifier: "IRR",
-    name: "Iranian Rial"
+    name: "Iranian Rial",
+    symbol: "﷼"
   },
   {
     identifier: "ISK",
-    name: "Icelandic Króna"
+    name: "Icelandic Króna",
+    symbol: "kr"
   },
   {
     identifier: "JEP",
-    name: "Jersey Pound"
+    name: "Jersey Pound",
+    symbol: "£"
   },
   {
     identifier: "JMD",
-    name: "Jamaican Dollar"
+    name: "Jamaican Dollar",
+    symbol: "J$"
   },
   {
     identifier: "JOD",
-    name: "Jordanian Dinar"
+    name: "Jordanian Dinar",
+    symbol: "د.ا"
   },
   {
     identifier: "JPY",
-    name: "Japanese Yen"
+    name: "Japanese Yen",
+    symbol: "¥"
   },
   {
     identifier: "KES",
-    name: "Kenyan Shilling"
+    name: "Kenyan Shilling",
+    symbol: "KSh"
   },
   {
     identifier: "KGS",
-    name: "Kyrgystani Som"
+    name: "Kyrgystani Som",
+    symbol: "сом"
   },
   {
     identifier: "KHR",
-    name: "Cambodian Riel"
+    name: "Cambodian Riel",
+    symbol: "៛"
   },
   {
     identifier: "KID",
-    name: "Kiribati Dollar"
+    name: "Kiribati Dollar",
+    symbol: "$"
   },
   {
     identifier: "KMF",
-    name: "Comorian Franc"
+    name: "Comorian Franc",
+    symbol: "CF"
   },
   {
     identifier: "KRW",
-    name: "South Korean Won"
+    name: "South Korean Won",
+    symbol: "₩"
   },
   {
     identifier: "KWD",
-    name: "Kuwaiti Dinar"
+    name: "Kuwaiti Dinar",
+    symbol: "د.ك"
   },
   {
     identifier: "KYD",
-    name: "Cayman Islands Dollar"
+    name: "Cayman Islands Dollar",
+    symbol: "$"
   },
   {
     identifier: "KZT",
-    name: "Kazakhstani Tenge"
+    name: "Kazakhstani Tenge",
+    symbol: "₸"
   },
   {
     identifier: "LAK",
-    name: "Laotian Kip"
+    name: "Laotian Kip",
+    symbol: "₭"
   },
   {
     identifier: "LBP",
-    name: "Lebanese Pound"
+    name: "Lebanese Pound",
+    symbol: "ل.ل"
   },
   {
     identifier: "LKR",
-    name: "Sri Lankan Rupee"
+    name: "Sri Lankan Rupee",
+    symbol: "Rs"
   },
   {
     identifier: "LRD",
-    name: "Liberian Dollar"
+    name: "Liberian Dollar",
+    symbol: "$"
   },
   {
     identifier: "LSL",
-    name: "Lesotho Loti"
+    name: "Lesotho Loti",
+    symbol: "L"
   },
   {
     identifier: "LYD",
-    name: "Libyan Dinar"
+    name: "Libyan Dinar",
+    symbol: "ل.د"
   },
   {
     identifier: "MAD",
-    name: "Moroccan Dirham"
+    name: "Moroccan Dirham",
+    symbol: "د.م."
   },
   {
     identifier: "MDL",
-    name: "Moldovan Leu"
+    name: "Moldovan Leu",
+    symbol: "L"
   },
   {
     identifier: "MGA",
-    name: "Malagasy Ariary"
+    name: "Malagasy Ariary",
+    symbol: "Ar"
   },
   {
     identifier: "MKD",
-    name: "Macedonian Denar"
+    name: "Macedonian Denar",
+    symbol: "ден"
   },
   {
     identifier: "MMK",
-    name: "Myanmar Kyat"
+    name: "Myanmar Kyat",
+    symbol: "K"
   },
   {
     identifier: "MNT",
-    name: "Mongolian Tugrik"
+    name: "Mongolian Tugrik",
+    symbol: "₮"
   },
   {
     identifier: "MOP",
-    name: "Macanese Pataca"
+    name: "Macanese Pataca",
+    symbol: "P"
   },
   {
     identifier: "MRU",
-    name: "Mauritanian Ouguiya"
+    name: "Mauritanian Ouguiya",
+    symbol: "UM"
   },
   {
     identifier: "MUR",
-    name: "Mauritian Rupee"
+    name: "Mauritian Rupee",
+    symbol: "₨"
   },
   {
     identifier: "MVR",
-    name: "Maldivian Rufiyaa"
+    name: "Maldivian Rufiyaa",
+    symbol: "Rf"
   },
   {
     identifier: "MWK",
-    name: "Malawian Kwacha"
+    name: "Malawian Kwacha",
+    symbol: "MK"
   },
   {
     identifier: "MXN",
-    name: "Mexican Peso"
+    name: "Mexican Peso",
+    symbol: "$"
   },
   {
     identifier: "MYR",
-    name: "Malaysian Ringgit"
+    name: "Malaysian Ringgit",
+    symbol: "RM"
   },
   {
     identifier: "MZN",
-    name: "Mozambican Metical"
+    name: "Mozambican Metical",
+    symbol: "MT"
   },
   {
     identifier: "NAD",
-    name: "Namibian Dollar"
+    name: "Namibian Dollar",
+    symbol: "N$"
   },
   {
     identifier: "NGN",
-    name: "Nigerian Naira"
+    name: "Nigerian Naira",
+    symbol: "₦"
   },
   {
     identifier: "NIO",
-    name: "Nicaraguan Córdoba"
+    name: "Nicaraguan Córdoba",
+    symbol: "C$"
   },
   {
     identifier: "NOK",
-    name: "Norwegian Krone"
+    name: "Norwegian Krone",
+    symbol: "kr"
   },
   {
     identifier: "NPR",
-    name: "Nepalese Rupee"
+    name: "Nepalese Rupee",
+    symbol: "₨"
   },
   {
     identifier: "NZD",
-    name: "New Zealand Dollar"
+    name: "New Zealand Dollar",
+    symbol: "NZ$"
   },
   {
     identifier: "OMR",
-    name: "Omani Rial"
+    name: "Omani Rial",
+    symbol: "ر.ع."
   },
   {
     identifier: "PAB",
-    name: "Panamanian Balboa"
+    name: "Panamanian Balboa",
+    symbol: "B/."
   },
   {
     identifier: "PEN",
-    name: "Peruvian Nuevo Sol"
+    name: "Peruvian Nuevo Sol",
+    symbol: "S/."
   },
   {
     identifier: "PGK",
-    name: "Papua New Guinean Kina"
+    name: "Papua New Guinean Kina",
+    symbol: "K"
   },
   {
     identifier: "PHP",
-    name: "Philippine Peso"
+    name: "Philippine Peso",
+    symbol: "₱"
   },
   {
     identifier: "PKR",
-    name: "Pakistani Rupee"
+    name: "Pakistani Rupee",
+    symbol: "₨"
   },
   {
     identifier: "PLN",
-    name: "Polish Zloty"
+    name: "Polish Zloty",
+    symbol: "zł"
   },
   {
     identifier: "PYG",
-    name: "Paraguayan Guarani"
+    name: "Paraguayan Guarani",
+    symbol: "₲"
   },
   {
     identifier: "QAR",
-    name: "Qatari Rial"
+    name: "Qatari Rial",
+    symbol: "ر.ق"
   },
   {
     identifier: "RON",
-    name: "Romanian Leu"
+    name: "Romanian Leu",
+    symbol: "lei"
   },
   {
     identifier: "RSD",
-    name: "Serbian Dinar"
+    name: "Serbian Dinar",
+    symbol: "дин"
   },
   {
     identifier: "RUB",
-    name: "Russian Ruble"
+    name: "Russian Ruble",
+    symbol: "₽"
   },
   {
     identifier: "RWF",
-    name: "Rwandan Franc"
+    name: "Rwandan Franc",
+    symbol: "FRw"
   },
   {
     identifier: "SAR",
-    name: "Saudi Riyal"
+    name: "Saudi Riyal",
+    symbol: "ر.س"
   },
   {
     identifier: "SBD",
-    name: "Solomon Islands Dollar"
+    name: "Solomon Islands Dollar",
+    symbol: "SI$"
   },
   {
     identifier: "SCR",
-    name: "Seychellois Rupee"
+    name: "Seychellois Rupee",
+    symbol: "₨"
   },
   {
     identifier: "SDG",
-    name: "Sudanese Pound"
+    name: "Sudanese Pound",
+    symbol: "ج.س."
   },
   {
     identifier: "SEK",
-    name: "Swedish Krona"
+    name: "Swedish Krona",
+    symbol: "kr"
   },
   {
     identifier: "SGD",
-    name: "Singapore Dollar"
+    name: "Singapore Dollar",
+    symbol: "S$"
   },
   {
     identifier: "SHP",
-    name: "Saint Helena Pound"
+    name: "Saint Helena Pound",
+    symbol: "£"
   },
   {
     identifier: "SLE",
-    name: "Sierra Leonean Leone"
+    name: "Sierra Leonean Leone",
+    symbol: "Le"
   },
   {
     identifier: "SLL",
-    name: "Sierra Leonean Leone"
+    name: "Sierra Leonean Leone",
+    symbol: "Le"
   },
   {
     identifier: "SOS",
-    name: "Somali Shilling"
+    name: "Somali Shilling",
+    symbol: "Sh.So."
   },
   {
     identifier: "SRD",
-    name: "Surinamese Dollar"
+    name: "Surinamese Dollar",
+    symbol: "$"
   },
   {
     identifier: "SSP",
-    name: "South Sudanese Pound"
+    name: "South Sudanese Pound",
+    symbol: "£"
   },
   {
     identifier: "STN",
-    name: "São Tomé and Príncipe Dobra"
+    name: "São Tomé and Príncipe Dobra",
+    symbol: "Db"
   },
   {
     identifier: "SYP",
-    name: "Syrian Pound"
+    name: "Syrian Pound",
+    symbol: "£S"
   },
   {
     identifier: "SZL",
-    name: "Swazi Lilangeni"
+    name: "Swazi Lilangeni",
+    symbol: "E"
   },
   {
     identifier: "THB",
-    name: "Thai Baht"
+    name: "Thai Baht",
+    symbol: "฿"
   },
   {
     identifier: "TJS",
-    name: "Tajikistani Somoni"
+    name: "Tajikistani Somoni",
+    symbol: "ЅМ"
   },
   {
     identifier: "TMT",
-    name: "Turkmenistani Manat"
+    name: "Turkmenistani Manat",
+    symbol: "m"
   },
   {
     identifier: "TND",
-    name: "Tunisian Dinar"
+    name: "Tunisian Dinar",
+    symbol: "د.ت"
   },
   {
     identifier: "TOP",
-    name: "Tongan Pa'anga"
+    name: "Tongan Pa'anga",
+    symbol: "T$"
   },
   {
     identifier: "TRY",
-    name: "Turkish Lira"
+    name: "Turkish Lira",
+    symbol: "₺"
   },
   {
     identifier: "TTD",
-    name: "Trinidad and Tobago Dollar"
+    name: "Trinidad and Tobago Dollar",
+    symbol: "TT$"
   },
   {
     identifier: "TVD",
-    name: "Tuvaluan Dollar"
+    name: "Tuvaluan Dollar",
+    symbol: "$"
   },
   {
     identifier: "TWD",
-    name: "New Taiwan Dollar"
+    name: "New Taiwan Dollar",
+    symbol: "NT$"
   },
   {
     identifier: "TZS",
-    name: "Tanzanian Shilling"
+    name: "Tanzanian Shilling",
+    symbol: "TSh"
   },
   {
     identifier: "UAH",
-    name: "Ukrainian Hryvnia"
+    name: "Ukrainian Hryvnia",
+    symbol: "₴"
   },
   {
     identifier: "UGX",
-    name: "Ugandan Shilling"
+    name: "Ugandan Shilling",
+    symbol: "USh"
   },
   {
     identifier: "USD",
-    name: "United States Dollar"
+    name: "United States Dollar",
+    symbol: "$"
   },
   {
     identifier: "UYU",
-    name: "Uruguayan Peso"
+    name: "Uruguayan Peso",
+    symbol: "$U"
   },
   {
     identifier: "UZS",
-    name: "Uzbekistan Som"
+    name: "Uzbekistan Som",
+    symbol: "сўм"
   },
   {
     identifier: "VES",
-    name: "Venezuelan Bolívar"
+    name: "Venezuelan Bolívar",
+    symbol: "Bs.S"
   },
   {
     identifier: "VND",
-    name: "Vietnamese Dong"
+    name: "Vietnamese Dong",
+    symbol: "₫"
   },
   {
     identifier: "VUV",
-    name: "Vanuatu Vatu"
+    name: "Vanuatu Vatu",
+    symbol: "VT"
   },
   {
     identifier: "WST",
-    name: "Samoan Tala"
+    name: "Samoan Tala",
+    symbol: "T"
   },
   {
     identifier: "XAF",
-    name: "Central African CFA Franc"
+    name: "Central African CFA Franc",
+    symbol: "FCFA"
   },
   {
     identifier: "XCD",
-    name: "East Caribbean Dollar"
+    name: "East Caribbean Dollar",
+    symbol: "$"
   },
   {
     identifier: "XDR",
-    name: "Special Drawing Rights"
+    name: "Special Drawing Rights",
+    symbol: "SDR"
   },
   {
     identifier: "XOF",
-    name: "West African CFA Franc"
+    name: "West African CFA Franc",
+    symbol: "CFA"
   },
   {
     identifier: "XPF",
-    name: "CFP Franc"
+    name: "CFP Franc",
+    symbol: "₣"
   },
   {
     identifier: "YER",
-    name: "Yemeni Rial"
+    name: "Yemeni Rial",
+    symbol: "﷼"
   },
   {
     identifier: "ZAR",
-    name: "South African Rand"
+    name: "South African Rand",
+    symbol: "R"
   },
   {
     identifier: "ZMW",
-    name: "Zambian Kwacha"
+    name: "Zambian Kwacha",
+    symbol: "ZK"
   },
   {
     identifier: "ZWL",
-    name: "Zimbabwean Dollar"
+    name: "Zimbabwean Dollar",
+    symbol: "Z$"
   }
 ];
+
+
 

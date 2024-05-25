@@ -14,7 +14,7 @@ const transactionSchema = new Schema(
             type: Number,
             required: true
         },
-        Reason: {
+        reason: {
             type: String
         }
     },

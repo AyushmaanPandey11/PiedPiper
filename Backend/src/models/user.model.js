@@ -18,12 +18,6 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true
         },
-        
-        // phone_no:{
-        //     type:Number,
-        //     required:[true, 'Phone no is required'],
-        //     unique: true
-        // },
         password: {
             type: String,
             required: [true, 'Password is required']

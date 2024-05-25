@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { addBalance } from '../utils/redux/userSlice';
+import { addBalance, addConversionRate, addTransactionHistory } from '../utils/redux/userSlice';
 import useAxios from '../hooks/useAxios';
 import axios from 'axios';
 import { CURRENCY_API_URL } from '../utils/constants';
+import Transactions from './Transactions';
 
 const Profile = () => {
   const user = useSelector((store) => store?.user?.userDetail?.user);
   const fetchedBalance = useSelector((store) => store?.user?.balance);
+  const transactions = useSelector((store) => store?.user?.transactions);
   const dispatch = useDispatch();
+  // created for authorization
   const axiosInstance = useAxios();
-
   const [userDetails, setUserDetails] = useState({
     username: '',
     email: '',
@@ -32,7 +34,6 @@ const Profile = () => {
     }
   }, [user, fetchedBalance]);
 
-  const [transactions, setTransactions] = useState([]);
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -51,25 +52,43 @@ const Profile = () => {
     fetchUserBalance();
   }, []);
 
-  const fetchUserBalance = async () => {
-    try {
-      const response = await axiosInstance.get(`/accbalance/getAccBalance`);
-      if (response.data.success) {
-        const UsdBalance = response.data.data.accountBalance;
-        const ExchangeResponse = await axios.get(`${CURRENCY_API_URL}/USD/${user.currency}/${UsdBalance}`);
-        const userCurrBalance = ExchangeResponse.data.conversion_result;
-        dispatch(addBalance(userCurrBalance));
-      }
-    } catch (err) {
-      console.error("Error while fetching balance data:", err);
-    }
-  };
+  
 
-  const fetchTransactionHistory = async () => {
-    const response = await fetch('/api/transactions');
-    const data = await response.json();
-    setTransactions(data);
-  };
+const fetchUserBalance = async () => {
+  try {
+    const response = await axiosInstance.get(`/accbalance/getAccBalance`);
+    if (response.data.success) {
+      const UsdBalance = response.data.data.accountBalance;
+      let formattedBalance;
+      if (user.currency !== "USD") {
+        const ExchangeResponse = await axios.get(`${CURRENCY_API_URL}/USD/${user.currency}/${UsdBalance}`);
+        const currencyConversionRate = await axios.get(`${CURRENCY_API_URL}/USD/${user.currency}`);
+        dispatch(addConversionRate(currencyConversionRate.data.conversion_rate));
+        
+        const userCurrBalance = ExchangeResponse.data.conversion_result;
+        formattedBalance = userCurrBalance.toFixed(2);
+        dispatch(addBalance(Number(formattedBalance)));
+      } else {
+        formattedBalance = UsdBalance.toFixed(2);
+        dispatch(addBalance(Number(formattedBalance)));
+      }  
+    }
+  } catch (err) {
+    console.error("Error while fetching balance data:", err);
+  }
+};
+
+const fetchTransactionHistory = async () => {
+  try {
+    const response = await axiosInstance.get(`/transactionHistory/getTransactionDetails`);
+    if (response.data.success) {
+      const transactionsData = response.data.message;
+      dispatch(addTransactionHistory(transactionsData));
+    }
+  } catch (err) {
+    console.error("Error while fetching TransactionHistory data:", err);
+  }
+};
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -296,15 +315,13 @@ const Profile = () => {
             </div>
           )}
         </div>
-        <div>
+        <div >
           <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
-          <ul>
-            {transactions.map((transaction, index) => (
-              <li key={index} className="mb-2">
-                {transaction.date}: {transaction.description} - {transaction.amount} {transaction.currency}
-              </li>
-            ))}
-          </ul>
+          <div className='ml-14 w-11/12'>
+          {transactions.map((transaction, index) => (
+            <Transactions key={transaction._id} transaction={transaction} />
+          ))}
+          </div>
         </div>
       </div>
     </div>

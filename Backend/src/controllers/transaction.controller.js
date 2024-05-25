@@ -1,18 +1,15 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js"
-import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Transaction } from "../models/transaction.model.js";
 import mongoose from "mongoose";
 
-
 const getTransactionDetails = asyncHandler(async (req, res) => {
-
     const userId = req.user?._id; 
+
     const transactions = await Transaction.aggregate([
         {
             $lookup: {
-                from: "users", 
+                from: "users",
                 localField: "sender",
                 foreignField: "_id",
                 as: "senderDetails"
@@ -20,7 +17,7 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
         },
         {
             $lookup: {
-                from: "users", 
+                from: "users",
                 localField: "receiver",
                 foreignField: "_id",
                 as: "receiverDetails"
@@ -28,8 +25,17 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
         },
         {
             $match: {
-                sender: new mongoose.Types.ObjectId(userId)
+                $or: [
+                    { sender: new mongoose.Types.ObjectId(userId) },
+                    { receiver: new mongoose.Types.ObjectId(userId) }
+                ]
             }
+        },
+        {
+            $unwind: "$senderDetails"
+        },
+        {
+            $unwind: "$receiverDetails"
         },
         {
             $project: {
@@ -38,40 +44,16 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
                 receiver: 1,
                 amount: 1,
                 reason: 1,
-                timestamp: 1
-            }
-        },
-        // Union debited transactions with credited transactions
-        {
-            $unionWith: {
-                coll: "transactions",
-                pipeline: [
-                    // Filter credited transactions
-                    {
-                        $match: {
-                            receiver: new mongoose.Types.ObjectId(userId)
-                        }
-                    },
-                    {
-                        $project: {
-                            _id: 1,
-                            sender: 1,
-                            receiver: 1,
-                            amount: 1,
-                            reason: 1,
-                            timestamp: 1
-                        }
-                    }
-                ]
+                createdAt: 1,
+                senderUsername: "$senderDetails.username",
+                receiverUsername: "$receiverDetails.username"
             }
         }
     ]);
 
-    // Send success response with transaction details
     res
     .status(200)
     .json(new ApiResponse(200, "Transaction details fetched successfully", transactions));
-
 });
 
 export { getTransactionDetails };

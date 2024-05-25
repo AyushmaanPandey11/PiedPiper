@@ -6,6 +6,7 @@ import axios from "axios";
 import mongoose from "mongoose";
 import { Transaction } from "../models/transaction.model.js";
 import { CURRENCY_API_URI } from "../constants.js";
+import { getUserId } from "./user.controller.js";
 
 const getUserBalance = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
@@ -80,15 +81,18 @@ const getBalance = async function(userId) {
 
 const addTransactionDetails = async function(senderId, receiverId, amount, reason) {
     try {
-        // Create a new transaction document
+        // Create a ntransaction document
+        
         const newTransaction = new Transaction({
             sender: senderId,
             receiver: receiverId,
             amount: amount,
-            reason: reason
+            reason: reason, 
         });
 
-        // Save the transaction
+        // Save the transactionn
+
+      
         await newTransaction.save();
 
         return newTransaction;
@@ -98,13 +102,16 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
 };
 
 
+
 const makeTransaction = asyncHandler(async (req, res) => {
-    const { receiverId, amount, currency, reason } = req?.body;
+    const { receiver, amount, currency, reason } = req.body;
     const senderId = req.body.user?._id;
     
-    if (!(receiverId && senderId && amount && currency && reason)) {
+
+    if (!(receiver && senderId && amount && currency && reason)) {
         throw new ApiError(400, "Please enter all the details");
     }
+    const receiverId = await getUserId(receiver);
     const senderBalance = await getBalance(senderId);
     const receiverBalance = await getBalance(receiverId);
     let updateBalanceSender;
@@ -142,9 +149,11 @@ const makeTransaction = asyncHandler(async (req, res) => {
 
     // Add transaction details only if balances are updated successfully
     const transactionAmount = currency === "USD" ? amount : convertedAmount;
-    await addTransactionDetails(senderId, receiverId, transactionAmount, reason);
+    const details = await addTransactionDetails(senderId, receiverId, transactionAmount, reason);
 
-    return res.status(200).json({ message: "Transaction was successful" });
+    return res
+    .status(200)
+    .json( new ApiResponse(200, "Transaction Successfull", details ) );    
 });
 
 

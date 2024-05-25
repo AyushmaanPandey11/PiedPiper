@@ -28,6 +28,18 @@ const generateAccessAndRefereshTokens = async(userId) =>{
     }
 }
 
+const getUserId = async (username) => {
+    try {
+        const user = await User.findOne({ username: username.toLowerCase() }).select('_id');
+        if (!user) {
+            throw new ApiError(400,"User not found");
+        }
+        return user._id;
+    } catch (error) {
+        throw new ApiError( 500 ,`Error fetching user details: ${error.message}`);
+    }
+};
+
 const createUserBalance = async function(userId){
     try {
         const existingBalance = await Balance.findOne({ user: userId });
@@ -314,5 +326,6 @@ export {
     changeCurrentPin,
     getCurrentUser,
     updateUserDetails,
-    getUserCurrency
+    getUserCurrency,
+    getUserId
 };
