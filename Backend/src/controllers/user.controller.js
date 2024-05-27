@@ -239,7 +239,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
     const { oldPassword, newPassword } = req.body
 
-
+    console.log(req.body);
 
     const user = await User.findById(req.user?._id)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
@@ -258,7 +258,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 const changeCurrentPin = asyncHandler(async (req, res) => {
     const { oldPin, newPin } = req.body;
-    console.log(oldPin, newPin);
+    console.log(req.body);
     const user = await User.findById(req.user?._id)
     const isPinCorrect = await user.isPinCorrect(oldPin)
     if (!isPinCorrect) {
@@ -294,9 +294,10 @@ const getUserCurrency = asyncHandler(async (req, res) => {
 })
 
 const updateUserDetails = asyncHandler(async (req, res) => {
-    const { username, email } = req.body
-
-    if (!username || !email) {
+    const { username, email } = req.body;
+    console.log(req.body);
+    console.log(username, email);
+    if (!username && !email) {
         throw new ApiError(400, "All fields are required")
     }
 

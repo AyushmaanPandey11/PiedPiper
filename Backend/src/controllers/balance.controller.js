@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Transaction } from "../models/transaction.model.js";
 import { CURRENCY_API_URI } from "../constants.js";
 import { getUserId } from "./user.controller.js";
+import { User } from "../models/user.model.js";
 
 const getUserBalance = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
@@ -104,13 +105,24 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
 
 
 const makeTransaction = asyncHandler(async (req, res) => {
-    const { receiver, amount, currency, reason } = req.body;
-    const senderId = req.body.user?._id;
-    
-
-    if (!(receiver && senderId && amount && currency && reason)) {
+    const { receiver, amount, currency, reason, pin } = req.body;
+    const senderId = req.user?._id;
+    if (!(receiver && senderId && amount && currency && reason && pin)) {
         throw new ApiError(400, "Please enter all the details");
     }
+
+    // Fetch the user from the database
+    const sender = await User.findById(senderId);
+    if (!sender) {
+        throw new ApiError(404, "Sender not found");
+    }
+
+    // Verify the pin
+    const isPinCorrect = await sender.isPinCorrect(pin);
+    if (!isPinCorrect) {
+        throw new ApiError(400, "Incorrect transaction pin");
+    }
+
     const receiverId = await getUserId(receiver);
     const senderBalance = await getBalance(senderId);
     const receiverBalance = await getBalance(receiverId);
@@ -124,7 +136,7 @@ const makeTransaction = asyncHandler(async (req, res) => {
         }
         updateBalanceSender = senderBalance - Number(amount);
     } else {
-        const response = await axios.get(`${CURRENCY_API_URI}/${currency}/USD`);
+        const response = await axios.get(`${CURRENCY_API_URI}/${String(currency)}/USD`);
         const conversionRate = response?.data?.conversion_rate;
         convertedAmount = amount * conversionRate;
         if (senderBalance - convertedAmount < 0) {
@@ -150,10 +162,9 @@ const makeTransaction = asyncHandler(async (req, res) => {
     // Add transaction details only if balances are updated successfully
     const transactionAmount = currency === "USD" ? amount : convertedAmount;
     const details = await addTransactionDetails(senderId, receiverId, transactionAmount, reason);
-
     return res
-    .status(200)
-    .json( new ApiResponse(200, "Transaction Successfull", details ) );    
+        .status(200)
+        .json(new ApiResponse(200, details ,"Transaction Successful"));    
 });
 
 

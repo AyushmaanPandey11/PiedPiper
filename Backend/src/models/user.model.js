@@ -64,21 +64,6 @@ userSchema.methods.isPinCorrect = async function(pin){
     return await bcrypt.compare(pin, this.pin);
 }
 
-
-// userSchema.methods.createUserWithBalance = async function(userId) {
-//     try {
-//         // Create user
-//         const user = await this.create(userData);
-        
-//         // Create balance for the user
-//         await Balance.createUserBalance(user._id);
-
-//         return user;
-//     } catch(error) {
-//         throw new ApiError(500, "Error creating user with balance");
-//     }
-// };
-
 userSchema.methods.generateAccessToken =  function(){
     
     return jwt.sign(

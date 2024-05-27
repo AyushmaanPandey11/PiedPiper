@@ -18,3 +18,8 @@ export const checkValidData = (username, email, password, isSignin, pin) => {
 
   return { isValid: true, message: null }; 
 };
+
+export const validatePassword = (password) => {
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+  return passwordRegex.test(password);
+};

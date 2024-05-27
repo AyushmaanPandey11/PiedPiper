@@ -1,11 +1,12 @@
-import {  useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { checkValidData } from "../utils/validate";
-import Header from './Header';
-import { BACKEND_URL, CurrencyPairs } from '../utils/constants';
+import { BACKEND_URL, CurrencyPairs, SUPPORTED_LANG } from '../utils/constants';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '../utils/redux/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeStatus, changeLanguage } from '../utils/redux/siteSlice';
+import Header from './Header';
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -18,6 +19,8 @@ const Login = () => {
   const currency = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const langKey = useSelector((store) => store.site?.Language);
 
   const HandleButtonClick = async () => {
     let ResponseMessage;
@@ -49,6 +52,7 @@ const Login = () => {
           const response = await axios.post(`${BACKEND_URL}/users/register`, UserRegData);
           const auth = response.data;
           if (auth.success) {
+            dispatch(changeStatus());
             dispatch(addUser(auth.data));
             navigate("/browse");
           } else {
@@ -70,6 +74,7 @@ const Login = () => {
           const response = await axios.post(`${BACKEND_URL}/users/login`, LoginData);
           const auth = response.data;
           if (auth?.success) {
+            dispatch(changeStatus());
             dispatch(addUser(auth.data));
             navigate("/browse");
           } else {
@@ -78,7 +83,7 @@ const Login = () => {
         } catch (err) {
           console.error("Error while posting data:", err);
         } finally {
-          setLoading(false); // Stop loading
+          setLoading(false); 
         }
       }
     }
@@ -88,44 +93,60 @@ const Login = () => {
     setIsSignIn(!isSignIn);
   };
 
+  const handleLangChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
+
   return (
-    <div className='bg-black absolute z-10'>
+    <div className='relative min-h-screen'>
       <Header />
-      <div className='absolute'>
-        <img src="./BG.jpg" alt="bg_img" className='w-screen' />
+      <div className='absolute inset-0 z-0 '>
+        <img src="./BG.jpg" alt="bg_img" className='w-full h-full object-cover' />
       </div>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className='w-3/12 absolute p-12 my-20 text-white bg-black mx-auto left-0 right-0 bg-opacity-75 rounded-md'>
-        <h1 className='font-bold text-3xl py-4'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
-        { <input ref={username} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your username' />}
-        {isSignIn && <p className='ml-[50%] font-bold'>Or</p>}
-        <input
-          ref={email}
-          className='my-4 p-4 w-full bg-gray-600 '
-          type='text'
-          placeholder='Enter Your Email Address'
-        />
-        <input
-          ref={password}
-          className='my-4 p-4 w-full bg-gray-600 '
-          type='password'
-          placeholder='Enter Password'
-        />
-        {!isSignIn && <input ref={pin} className='my-6 p-4 w-full bg-gray-600 ' type='password' placeholder='Enter Your Pin' />}
-        {!isSignIn && <select ref={currency} className='px-4 w-full font-bold h-12 bg-gray-600 border-none text-white'>
-          {
-            CurrencyPairs.map(lang => <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>)
-          }
-        </select>}
-        <p className='text-red-700 font-bold py-2'>{errorMessage}</p>
-        <button className='my-4 p-4 w-full bg-blue-700' onClick={HandleButtonClick} disabled={loading}>
-          {loading ? <span className="loader"></span> : (isSignIn ? "Sign In" : "Sign Up")}
-        </button>
-        <p className='my-2 p-2 cursor-pointer underline-offset-1' onClick={ToggleSignInForm}>
-          {isSignIn ? "New to PiedPiper? Sign Up now!" : "Already a Member? Sign in now"}
-        </p>
-      </form>
+      <div className='relative z-10'>
+        <div className='flex justify-between items-start p-4'>
+          <img className='w-30 h-28 ml-4 -mt-24' src="./LOGO.jpg" alt='LOGO_IMG' />
+          <select className='px-5 -mt-16 mr-4 font-bold h-10 bg-blue-900 border-none text-white' onChange={handleLangChange} value={langKey}>
+            {
+              SUPPORTED_LANG.map(lang => (
+                <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>
+              ))
+            }
+          </select>
+        </div>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className='w-3/12 p-12 mt-5 text-white bg-black bg-opacity-75 mx-auto rounded-md'>
+          <h1 className='font-bold text-3xl py-4'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
+          <input ref={username} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your username' />
+          {isSignIn && <p className='ml-[45%] font-bold'>Or</p>}
+          <input
+            ref={email}
+            className='my-4 p-4 w-full bg-gray-600 '
+            type='text'
+            placeholder='Enter Your Email Address'
+          />
+          <input
+            ref={password}
+            className='my-4 p-4 w-full bg-gray-600 '
+            type='password'
+            placeholder='Enter Password'
+          />
+          {!isSignIn && <input ref={pin} className='my-6 p-4 w-full bg-gray-600 ' type='password' placeholder='Enter Your Pin' />}
+          {!isSignIn && <select ref={currency} className='px-4 w-full font-bold h-12 bg-gray-600 border-none text-white'>
+            {
+              CurrencyPairs.map(lang => <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>)
+            }
+          </select>}
+          <p className='text-red-700 font-bold py-2'>{errorMessage}</p>
+          <button className='my-4 p-4 w-full bg-blue-700' onClick={HandleButtonClick} disabled={loading}>
+            {loading ? <span className="loader"></span> : (isSignIn ? "Sign In" : "Sign Up")}
+          </button>
+          <p className='my-2 p-2 cursor-pointer underline-offset-1' onClick={ToggleSignInForm}>
+            {isSignIn ? "New to PiedPiper? Sign Up now!" : "Already a Member? Sign in now"}
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,6 @@ const userSlice = createSlice(
     {
         name : "user",
         initialState : {
-            lang : 'eng',
             userDetail : [],
             balance : null,
             transactions: [],
@@ -16,9 +15,6 @@ const userSlice = createSlice(
             },
             removeUser : (state,action) => {
                 return null;
-            },
-            changeLanguage : (state,action) => {
-                state.lang = action.payload;
             },
             addBalance: (state,action) => {
                 state.balance= action.payload;
@@ -34,7 +30,7 @@ const userSlice = createSlice(
     }
 );
 
-export const { addUser, removeUser,changeLanguage, addBalance,addTransactionHistory,addConversionRate } = userSlice.actions;
+export const { addUser, removeUser, addBalance,addTransactionHistory,addConversionRate } = userSlice.actions;
 export const  userReducer = userSlice.reducer;
 
 export default userSlice.reducer;

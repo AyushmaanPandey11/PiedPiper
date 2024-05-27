@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import lang from '../utils/languageConstants';
 
 const CurrencySection = () => {
-  const langKey = useSelector((store) => store.user?.lang);
+  const langKey = useSelector((store) => store.site?.Language);
   const [fromCurrency, setFromCurrency] = useState('EUR');
   const [toCurrency, setToCurrency] = useState('');
   const [amount, setAmount] = useState('');

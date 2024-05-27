@@ -3,11 +3,10 @@ import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { CurrencyPairs } from '../utils/constants';
 
-
 const Transactions = ({ transaction }) => {
   const rate = useSelector((store) => store?.user?.conversionRate);
   const currency = useSelector((store) => store.user?.userDetail?.user?.currency);
-  const { receiverUsername, senderUsername, amount, createdAt } = transaction;
+  const { receiverUsername, senderUsername, amount, createdAt, reason } = transaction;
   let convertedAmount = null;
 
   if (rate !== null) {
@@ -28,8 +27,15 @@ const Transactions = ({ transaction }) => {
     <div className="m-2 p-4 border rounded-lg border-gray-300 bg-white shadow-md">
       <div className="flex justify-between items-center">
         <div>
-          <div className="font-bold text-lg mb-2">Paid to</div>
-          <div className="text-gray-700 text-3xl font-bold">{receiverUsername}</div>
+          <div className='flex flex-row'>
+            <div className="font-bold text-lg mb-2">Paid to:</div>
+            <div className="text-gray-700 text-3xl font-bold ml-3 -mt-2">{receiverUsername}</div>
+          </div>
+          {reason && (
+            <div className="text-gray-700 text-md mt-1">
+              <span className="font-bold">Reason: </span>{reason}
+            </div>
+          )}
         </div>
         <div className={`text-xl font-semibold ${amountClass}`}>
           {amountSign} {currency} ({currencySymbol}) {finalAmount}
