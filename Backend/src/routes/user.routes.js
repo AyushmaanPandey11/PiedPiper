@@ -13,10 +13,10 @@ router.post("/login",loginUser);
 // secure Routes
 router.post("/logout",verifyJWT,logoutUser);
 router.post("/refresh-token",refreshAccessToken);
-router.patch("/change-password",verifyJWT,changeCurrentPassword);
-router.patch("/change-pin",verifyJWT,changeCurrentPin);
+router.post("/change-password",verifyJWT,changeCurrentPassword);
+router.post("/change-pin",verifyJWT,changeCurrentPin);
 router.get("/current-user",verifyJWT,getCurrentUser);
 router.get("/current-currency",verifyJWT,getUserCurrency);
-router.patch("/update-account",verifyJWT,updateUserDetails);
+router.post("/update-account",verifyJWT,updateUserDetails);
 
 export default router;
