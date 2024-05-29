@@ -7,6 +7,7 @@ import { addUser } from '../utils/redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeStatus, changeLanguage } from '../utils/redux/siteSlice';
 import Header from './Header';
+import lang from '../utils/languageConstants';
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -118,21 +119,21 @@ const Login = () => {
           onSubmit={(e) => e.preventDefault()}
           className='w-3/12 p-12 mt-5 text-white bg-black bg-opacity-75 mx-auto rounded-md'>
           <h1 className='font-bold text-3xl py-4'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
-          <input ref={username} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder='Enter Your username' />
+          <input ref={username} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder={lang[langKey].EnterYourName} />
           {isSignIn && <p className='ml-[45%] font-bold'>Or</p>}
           <input
             ref={email}
             className='my-4 p-4 w-full bg-gray-600 '
             type='text'
-            placeholder='Enter Your Email Address'
+            placeholder={lang[langKey].EnterYourEmailAddress}
           />
           <input
             ref={password}
             className='my-4 p-4 w-full bg-gray-600 '
             type='password'
-            placeholder='Enter Password'
+            placeholder={lang[langKey].EnterPassword}
           />
-          {!isSignIn && <input ref={pin} className='my-6 p-4 w-full bg-gray-600 ' type='password' placeholder='Enter Your Pin' />}
+          {!isSignIn && <input ref={pin} className='my-6 p-4 w-full bg-gray-600 ' type='password' placeholder={lang[langKey].EnterPin} />}
           {!isSignIn && <select ref={currency} className='px-4 w-full font-bold h-12 bg-gray-600 border-none text-white'>
             {
               CurrencyPairs.map(lang => <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>)

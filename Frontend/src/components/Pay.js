@@ -4,6 +4,8 @@ import { CurrencyPairs } from '../utils/constants';
 import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import TransactionDetails from './TransactionDetails';
+import { useSelector } from 'react-redux';
+import lang from '../utils/languageConstants';
 
 const Pay = () => {
   const receiverRef = useRef('');
@@ -11,6 +13,7 @@ const Pay = () => {
   const amountRef = useRef('');
   const reasonRef = useRef('');
   const pinRef = useRef('');
+  const langKey = useSelector((store) => store.site?.Language);
   const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState(false);
   const [transactionResult, setTransactionResult] = useState(null);
@@ -62,13 +65,13 @@ const Pay = () => {
         <img className="w-30 h-full m-4" src="./LOGO.jpg" alt="LOGO_IMG" />
       </div>
       <div className="max-w-lg mx-auto p-6 bg-blue-600 rounded-lg shadow-md mt-10">
-        <h1 className="text-3xl font-bold mb-4 text-center">Make a Transaction</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">{lang[langKey].MakeAtransaction}</h1>
         {transactionResult && transactionResult.success ? (
           <TransactionDetails transaction={transactionResult.data} />
         ) : (
           <form onSubmit={handleTransaction}>
             <div className="mb-4">
-              <label className="block text-gray-700">Receiver Username</label>
+              <label className="block text-gray-700">{lang[langKey].ReceiverUsername}</label>
               <input
                 type="text"
                 ref={receiverRef}
@@ -77,7 +80,7 @@ const Pay = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Currency</label>
+              <label className="block text-gray-700">{lang[langKey].Currency}</label>
               <select
                 ref={currencyRef}
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
@@ -90,7 +93,7 @@ const Pay = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Amount</label>
+              <label className="block text-gray-700">{lang[langKey].Amount}</label>
               <input
                 type="number"
                 ref={amountRef}
@@ -99,7 +102,7 @@ const Pay = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">6-digit PIN</label>
+              <label className="block text-gray-700">{lang[langKey].SixDigPin}</label>
               <input
                 type="password"
                 ref={pinRef}
@@ -110,7 +113,7 @@ const Pay = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Reason</label>
+              <label className="block text-gray-700">{lang[langKey].Reason}</label>
               <input
                 type="text"
                 ref={reasonRef}
@@ -137,7 +140,7 @@ const Pay = () => {
           </div>
         )}
         <div className="bg-green-700 text-white w-2/5 p-3 rounded-md my-5 mx-32 font-bold">
-          <Link to="/browse"><button className="mx-8">Home page</button></Link>
+          <Link to="/browse"><button className="mx-8">{lang[langKey].Home}</button></Link>
         </div>
       </div>
     </div>

@@ -7,8 +7,10 @@ import axios from 'axios';
 import { CURRENCY_API_URL } from '../utils/constants';
 import Transactions from './Transactions';
 import { validatePassword } from '../utils/validate';
+import lang from '../utils/languageConstants';
 
 const Profile = () => {
+  const langKey = useSelector((store) => store.site?.Language);
   const user = useSelector((store) => store?.user?.userDetail?.user);
   const fetchedBalance = useSelector((store) => store?.user?.balance);
   const transactions = useSelector((store) => store?.user?.transactions);
@@ -163,12 +165,12 @@ const Profile = () => {
     <div className="bg-white min-h-screen flex flex-col">
       <Header />
       <div className="bg-blue-600 w-9/12 mx-auto p-6 rounded-lg shadow-md mt-16">
-        <h1 className="text-3xl font-bold mb-4 text-center">Profile</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">{lang[langKey].Profile}</h1>
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">User Details</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-gray-700">Username</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].username}</label>
               <input
                 type="text"
                 name="username"
@@ -179,7 +181,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-gray-700">Email</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].Email}</label>
               <input
                 type="email"
                 name="email"
@@ -190,7 +192,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-gray-700">User ID</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].userId}</label>
               <input
                 type="text"
                 name="userId"
@@ -200,7 +202,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-gray-700">Balance</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].Balance}</label>
               <input
                 type="text"
                 name="balance"
@@ -210,7 +212,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-gray-700">Currency</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].Currency}</label>
               <input
                 type="text"
                 name="currency"
@@ -234,22 +236,22 @@ const Profile = () => {
           )}
         </div>
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Security</h2>
+          <h2 className="text-2xl font-semibold mb-4">{lang[langKey].Security}</h2>
           <button
             onClick={() => setShowPasswordForm(!showPasswordForm)}
             className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
           >
-            Change Password
+          {lang[langKey].ChangePassword}
           </button>
           {showPasswordForm && (
             <div className="mt-4 p-4 border rounded bg-gray-100">
-              <label className="block text-gray-700">Old Password</label>
+              <label className="block text-gray-700">{lang[langKey].OldPassword}</label>
               <input
                 type="password"
                 ref={oldPasswordRef}
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
               />
-              <label className="block text-gray-700 mt-4">New Password</label>
+              <label className="block text-gray-700 mt-4">{lang[langKey].NewPassword}</label>
               <input
                 type="password"
                 ref={newPasswordRef}
@@ -259,7 +261,7 @@ const Profile = () => {
                 onClick={handlePasswordChange}
                 className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
               >
-                Submit
+              {lang[langKey].Submit}
               </button>
               {errors.password && (
                 <p className="mt-2 text-red-500">{errors.password}</p>
@@ -273,17 +275,17 @@ const Profile = () => {
             onClick={() => setShowPinForm(!showPinForm)}
             className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
           >
-            Change PIN
+          {lang[langKey].ChangePin}
           </button>
           {showPinForm && (
             <div className="mt-4 p-4 border rounded bg-gray-100">
-              <label className="block text-gray-700">Old PIN</label>
+              <label className="block text-gray-700">{lang[langKey].OldPin}</label>
               <input
                 type="password"
                 ref={oldPinRef}
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
               />
-              <label className="block text-gray-700 mt-4">New PIN</label>
+              <label className="block text-gray-700 mt-4">{lang[langKey].NewPin}</label>
               <input
                 type="password"
                 ref={newPinRef}
@@ -293,7 +295,7 @@ const Profile = () => {
                 onClick={handlePinChange}
                 className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
               >
-                Submit
+              {lang[langKey].Submit}
               </button>
               {errors.pin && (
                 <p className="mt-2 text-red-500">{errors.pin}</p>
@@ -305,7 +307,7 @@ const Profile = () => {
           )}
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Transaction History</h2>
+          <h2 className="text-2xl font-semibold mb-4">{lang[langKey].TransactionHistory}</h2>
           <div className='ml-14 w-11/12'>
             {transactions.map((transaction) => (
               <Transactions key={transaction._id} transaction={transaction} />

@@ -2,8 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CURRENCY_API_URL } from '../utils/constants';
+import lang from '../utils/languageConstants';
 
 const TransactionDetails = ({ transaction }) => {
+  const langKey = useSelector((store)=> store.site?.Language);
   const {sender, receiver,amount,initialAmount,initialCurrency,reason,_id,createdAt,} = transaction;
   const [amountInUserCurr,setAmountInUserCurr]= useState(null);
   const currency = useSelector((state) => state.user?.userDetail?.user?.currency);
@@ -15,7 +17,7 @@ const TransactionDetails = ({ transaction }) => {
         );
         const result = response?.data?.conversion_rate;
         if (result) {
-          setAmountInUserCurr(result);
+          setAmountInUserCurr(result*amount);
         } else {
           console.error("Error: Conversion rate not found in API response");
         }
@@ -27,19 +29,19 @@ const TransactionDetails = ({ transaction }) => {
     if (initialCurrency && currency) {
       convertCurrency();
     }
-  }, [currency, initialCurrency]);
+  }, [currency, initialCurrency,amount]);
 
   return (
     <div className="bg-green-500 text-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Transaction Successful</h2>
-      <h2 className="text-xl font-bold mb-1">Details:</h2>
-      <p><strong>Sender ID:</strong> {sender}</p>
-      <p><strong>Receiver ID:</strong> {receiver}</p>
-      <p><strong>Amount & Currency During Payment: </strong>{initialAmount} {initialCurrency} </p>
-      <p><strong>Amount in {currency}: </strong> {amountInUserCurr} </p>
-      <p><strong>Reason:</strong> {reason}</p>
-      <p><strong>Transaction ID:</strong> {_id}</p>
-      <p><strong>Time :</strong> {new Date(createdAt).toLocaleString()}</p>
+      <h2 className="text-2xl font-bold mb-4">{lang[langKey].TransactionSuccessfull}</h2>
+      <h2 className="text-xl font-bold mb-1">{lang[langKey].Details}:</h2>
+      <p><strong>{lang[langKey].SenderId}:</strong> {sender}</p>
+      <p><strong>{lang[langKey].ReceiverId}:</strong> {receiver}</p>
+      <p><strong>{lang[langKey].AmountAndCurrencyDuringPayment}: </strong>{initialAmount} {initialCurrency} </p>
+      <p><strong>{lang[langKey].AmountIn} {currency}: </strong> {amountInUserCurr} </p>
+      <p><strong>{lang[langKey].Reason}:</strong> {reason}</p>
+      <p><strong>{lang[langKey].TransactionId}:</strong> {_id}</p>
+      <p><strong>{lang[langKey].Time} :</strong> {new Date(createdAt).toLocaleString()}</p>
     </div>
   );
 };
