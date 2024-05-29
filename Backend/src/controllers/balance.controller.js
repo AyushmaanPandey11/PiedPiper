@@ -80,7 +80,7 @@ const getBalance = async function(userId) {
     }
 };
 
-const addTransactionDetails = async function(senderId, receiverId, amount, reason) {
+const addTransactionDetails = async function(senderId, receiverId, amount, reason,initialCurrency,initialAmount) {
     try {
         // Create a ntransaction document
         
@@ -88,6 +88,8 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
             sender: senderId,
             receiver: receiverId,
             amount: amount,
+            initialAmount:initialAmount,
+            initialCurrency:initialCurrency,
             reason: reason, 
         });
 
@@ -105,9 +107,9 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
 
 
 const makeTransaction = asyncHandler(async (req, res) => {
-    const { receiver, amount, currency, reason, pin } = req.body;
+    const { receiver, amount, initialCurrency, reason, pin, } = req.body;
     const senderId = req.user?._id;
-    if (!(receiver && senderId && amount && currency && reason && pin)) {
+    if (!(receiver && senderId && amount && initialCurrency && reason && pin)) {
         throw new ApiError(400, "Please enter all the details");
     }
 
@@ -130,13 +132,13 @@ const makeTransaction = asyncHandler(async (req, res) => {
     let updateBalanceReceiver;
     let convertedAmount;
 
-    if (currency === "USD") {
+    if (initialCurrency === "USD") {
         if (senderBalance - amount < 0) {
             throw new ApiError(400, "Transaction not possible. Insufficient Balance");
         }
         updateBalanceSender = senderBalance - Number(amount);
     } else {
-        const response = await axios.get(`${CURRENCY_API_URI}/${String(currency)}/USD`);
+        const response = await axios.get(`${CURRENCY_API_URI}/${String(initialCurrency)}/USD`);
         const conversionRate = response?.data?.conversion_rate;
         convertedAmount = amount * conversionRate;
         if (senderBalance - convertedAmount < 0) {
@@ -149,7 +151,7 @@ const makeTransaction = asyncHandler(async (req, res) => {
     const updatedSenderBal = await updateBalance(senderId, updateBalanceSender);
     
     // Update receiver balance
-    updateBalanceReceiver = (currency === "USD") 
+    updateBalanceReceiver = (initialCurrency === "USD") 
         ? (Number(receiverBalance) + Number(amount)) 
         : (Number(receiverBalance) + Number(convertedAmount));
     const updatedReceiverBal = await updateBalance(receiverId, updateBalanceReceiver);
@@ -160,8 +162,8 @@ const makeTransaction = asyncHandler(async (req, res) => {
     }
 
     // Add transaction details only if balances are updated successfully
-    const transactionAmount = currency === "USD" ? amount : convertedAmount;
-    const details = await addTransactionDetails(senderId, receiverId, transactionAmount, reason);
+    const transactionAmount = initialCurrency === "USD" ? amount : convertedAmount;
+    const details = await addTransactionDetails(senderId,receiverId,transactionAmount,reason,initialCurrency,amount);
     return res
         .status(200)
         .json(new ApiResponse(200, details ,"Transaction Successful"));    

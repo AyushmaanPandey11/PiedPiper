@@ -258,7 +258,6 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 const changeCurrentPin = asyncHandler(async (req, res) => {
     const { oldPin, newPin } = req.body;
-    console.log(req.body);
     const user = await User.findById(req.user?._id)
     const isPinCorrect = await user.isPinCorrect(oldPin)
     if (!isPinCorrect) {

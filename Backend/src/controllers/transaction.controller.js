@@ -4,7 +4,7 @@ import { Transaction } from "../models/transaction.model.js";
 import mongoose from "mongoose";
 
 const getTransactionDetails = asyncHandler(async (req, res) => {
-    const userId = req.user?._id; 
+    const userId = req.user?._id;
 
     const transactions = await Transaction.aggregate([
         {
@@ -38,11 +38,18 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
             $unwind: "$receiverDetails"
         },
         {
+            $sort: {
+                createdAt: -1 // Sort by createdAt field in descending order
+            }
+        },
+        {
             $project: {
                 _id: 1,
                 sender: 1,
                 receiver: 1,
                 amount: 1,
+                initialAmount: 1,
+                initialCurrency: 1,
                 reason: 1,
                 createdAt: 1,
                 senderUsername: "$senderDetails.username",
@@ -51,9 +58,7 @@ const getTransactionDetails = asyncHandler(async (req, res) => {
         }
     ]);
 
-    res
-    .status(200)
-    .json(new ApiResponse(200, "Transaction details fetched successfully", transactions));
+    res.status(200).json(new ApiResponse(200, "Transaction details fetched successfully", transactions));
 });
 
 export { getTransactionDetails };

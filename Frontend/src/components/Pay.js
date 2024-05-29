@@ -37,7 +37,7 @@ const Pay = () => {
     try {
       const transactionData = {
         receiver: receiverRef.current.value,
-        currency: currencyRef.current.value,
+        initialCurrency: currencyRef.current.value,
         amount: parseFloat(amountRef.current.value),
         pin: pinValue,
         reason: reasonRef.current.value

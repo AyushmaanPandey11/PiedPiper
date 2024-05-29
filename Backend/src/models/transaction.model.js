@@ -14,6 +14,14 @@ const transactionSchema = new Schema(
             type: Number,
             required: true
         },
+        initialAmount: {
+            type : Number,
+            required : true,
+        },
+        initialCurrency: {
+            type: String,
+            required : true,
+        },
         reason: {
             type: String
         }

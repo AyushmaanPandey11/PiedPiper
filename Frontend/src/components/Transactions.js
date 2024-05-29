@@ -6,7 +6,7 @@ import { CurrencyPairs } from '../utils/constants';
 const Transactions = ({ transaction }) => {
   const rate = useSelector((store) => store?.user?.conversionRate);
   const currency = useSelector((store) => store.user?.userDetail?.user?.currency);
-  const { receiverUsername, senderUsername, amount, createdAt, reason } = transaction;
+  const { receiverUsername, senderUsername, initialAmount, initialCurrency, amount, createdAt, reason } = transaction;
   let convertedAmount = null;
 
   if (rate !== null) {
@@ -36,14 +36,19 @@ const Transactions = ({ transaction }) => {
               <span className="font-bold">Reason: </span>{reason}
             </div>
           )}
+          {initialAmount && initialCurrency && (
+            <div className="text-gray-700 text-md mt-1">
+              <span className="font-bold">Amount & Currency During Payment: </span>{initialAmount} {initialCurrency}
+            </div>
+          )}
         </div>
         <div className={`text-xl font-semibold ${amountClass}`}>
           {amountSign} {currency} ({currencySymbol}) {finalAmount}
         </div>
       </div>
-      <div className="flex justify-between items-center mt-4">
-        <div>
-          <div className="font-bold">Date:</div>
+      <div className="flex justify-between items-center mt-2">
+        <div className='flex flex-row'>
+          <div className="font-bold mr-2">Date:</div>
           <div className="text-gray-700">{formattedDate}</div>
         </div>
         <div>

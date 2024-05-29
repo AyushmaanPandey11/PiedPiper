@@ -6,6 +6,15 @@ export const SUPPORTED_LANG = [
     }, 
     {
       identifier: "hindi", name: "Hindi"
+    }, 
+    {
+      identifier: "tamil", name: "Tamil"
+    }, 
+    {
+      identifier: "esp", name: "Espanol"
+    }, 
+    {
+      identifier: "jpn", name: "Japanese"
     }
   ];
 

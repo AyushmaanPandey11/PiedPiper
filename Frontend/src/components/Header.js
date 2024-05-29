@@ -17,6 +17,10 @@ const Header = () => {
   const handleLangChange = (e) => {
     dispatch(changeLanguage(e.target.value));
   };
+  // if(!loggedIn)
+  // {
+  //   navigate("/");
+  // }
 
   const handleLogout = () => {
     dispatch(changeStatus());
