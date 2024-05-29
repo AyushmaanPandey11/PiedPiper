@@ -22,6 +22,10 @@ const persistedReducer = persistReducer(persistConfig,reducer);
 const appStore = configureStore(
     {
         reducer : persistedReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({
+              serializableCheck: false,
+            }),
     },
 );
 

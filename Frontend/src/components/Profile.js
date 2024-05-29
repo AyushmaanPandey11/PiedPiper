@@ -168,9 +168,9 @@ const Profile = () => {
         <h1 className="text-3xl font-bold mb-4 text-center">{lang[langKey].Profile}</h1>
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">User Details</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 justify-center">
             <div>
-              <label className="block font-bold text-gray-700">{lang[langKey].username}</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].Username}</label>
               <input
                 type="text"
                 name="username"
@@ -192,7 +192,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-gray-700">{lang[langKey].userId}</label>
+              <label className="block font-bold text-gray-700">{lang[langKey].UserId}</label>
               <input
                 type="text"
                 name="userId"

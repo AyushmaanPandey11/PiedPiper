@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { FaSpinner } from 'react-icons/fa';
-import { CurrencyPairs } from '../utils/constants';
+import { CurrencyPairs, SUPPORTED_LANG } from '../utils/constants';
 import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import TransactionDetails from './TransactionDetails';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import lang from '../utils/languageConstants';
+import { changeLanguage } from '../utils/redux/siteSlice';
 
 const Pay = () => {
   const receiverRef = useRef('');
@@ -13,6 +14,7 @@ const Pay = () => {
   const amountRef = useRef('');
   const reasonRef = useRef('');
   const pinRef = useRef('');
+  const dispatch = useDispatch();
   const langKey = useSelector((store) => store.site?.Language);
   const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +25,10 @@ const Pay = () => {
     if (/^\d{0,6}$/.test(value)) { 
       pinRef.current = value;
     }
+  };
+
+  const handleLangChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
   };
 
   const handleTransaction = async (e) => {
@@ -60,12 +66,20 @@ const Pay = () => {
   };
 
   return (
-    <div>
-      <div className="h-28">
-        <img className="w-30 h-full m-4" src="./LOGO.jpg" alt="LOGO_IMG" />
+    <div className='relative min-h-screen'>
+      <div className='relative z-10'>
+      <div className='flex justify-between items-center p-4 mt-20 '>
+        <img className='w-30 h-28 ml-4' src="./LOGO.jpg" alt='LOGO_IMG' style={{ marginTop: '-5rem' }} />
+        <select className='px-5 justify-start -mt-10 mr-4 font-bold h-10 bg-blue-900 border-none text-white' onChange={handleLangChange} value={langKey}>
+          {
+            SUPPORTED_LANG.map(lang => (
+              <option key={lang.identifier} value={lang.identifier}>{lang.name}</option>
+            ))
+          }
+        </select>
       </div>
       <div className="max-w-lg mx-auto p-6 bg-blue-600 rounded-lg shadow-md mt-10">
-        <h1 className="text-3xl font-bold mb-4 text-center">{lang[langKey].MakeAtransaction}</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">{lang[langKey].MakeAtransaction}</h1>      
         {transactionResult && transactionResult.success ? (
           <TransactionDetails transaction={transactionResult.data} />
         ) : (
@@ -129,7 +143,7 @@ const Pay = () => {
               {isLoading ? (
                 <FaSpinner className="animate-spin mx-auto" />
               ) : (
-                'Make Payment'
+                lang[langKey].MakePayment
               )}
             </button>
           </form>
@@ -140,11 +154,17 @@ const Pay = () => {
           </div>
         )}
         <div className="bg-green-700 text-white w-2/5 p-3 rounded-md my-5 mx-32 font-bold">
-          <Link to="/browse"><button className="mx-8">{lang[langKey].Home}</button></Link>
+          <Link to="/browse"><button className="mx-8 pl-6">{lang[langKey].Home}</button></Link>
         </div>
       </div>
     </div>
+</div>
+
   );
 };
 
 export default Pay;
+
+
+
+

@@ -2,8 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { CurrencyPairs } from '../utils/constants';
+import lang from '../utils/languageConstants';
 
 const Transactions = ({ transaction }) => {
+  const langKey = useSelector((store)=>store.site?.Language);
   const rate = useSelector((store) => store?.user?.conversionRate);
   const currency = useSelector((store) => store.user?.userDetail?.user?.currency);
   const { receiverUsername, senderUsername, initialAmount, initialCurrency, amount, createdAt, reason } = transaction;
@@ -28,17 +30,17 @@ const Transactions = ({ transaction }) => {
       <div className="flex justify-between items-center">
         <div>
           <div className='flex flex-row'>
-            <div className="font-bold text-lg mb-2">Paid to:</div>
+            <div className="font-bold text-lg mb-2">{lang[langKey].PaidTo} :</div>
             <div className="text-gray-700 text-3xl font-bold ml-3 -mt-2">{receiverUsername}</div>
           </div>
           {reason && (
             <div className="text-gray-700 text-md mt-1">
-              <span className="font-bold">Reason: </span>{reason}
+              <span className="font-bold">{lang[langKey].Reason}: </span>{reason}
             </div>
           )}
           {initialAmount && initialCurrency && (
             <div className="text-gray-700 text-md mt-1">
-              <span className="font-bold">Amount & Currency During Payment: </span>{initialAmount} {initialCurrency}
+              <span className="font-bold">{lang[langKey].AmountAndCurrencyDuringPayment}: </span>{initialAmount} {initialCurrency}
             </div>
           )}
         </div>
@@ -48,12 +50,12 @@ const Transactions = ({ transaction }) => {
       </div>
       <div className="flex justify-between items-center mt-2">
         <div className='flex flex-row'>
-          <div className="font-bold mr-2">Date:</div>
+          <div className="font-bold mr-2">{lang[langKey].Date}:</div>
           <div className="text-gray-700">{formattedDate}</div>
         </div>
         <div>
           <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-800">
-            {isCredited ? "Credited" : "Debited"}
+            {isCredited ? lang[langKey].Credited : lang[langKey].Debited}
           </span>
         </div>
       </div>

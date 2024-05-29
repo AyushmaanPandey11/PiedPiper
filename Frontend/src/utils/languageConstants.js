@@ -46,7 +46,9 @@ const lang = {
         ReceiverId: "Receiver ID",
         AmountIn: "Amount In",
         TransactionId: "Transaction ID",
-        Time: "Time"
+        Time: "Time",
+        Credited: "Credited",
+        Debited: "Debited"
     },
     hindi: {
         CurrencyConverter : "मुद्रा परिवर्तक",
@@ -95,7 +97,9 @@ const lang = {
         ReceiverId: "प्राप्तकर्ता आईडी",
         AmountIn: "में राशि",
         TransactionId: "लेन-देन आईडी",
-        Time: "समय"
+        Time: "समय",
+        Credited: "जमा किया गया",
+        Debited: "डेबिट किया गया"
     },
     tamil: {
         CurrencyConverter : "நாணய மாற்றி",
@@ -144,7 +148,9 @@ const lang = {
         ReceiverId: "பெறுநர் ஐடி",
         AmountIn: "இல் தொகை",
         TransactionId: "பரிமாற்ற ஐடி",
-        Time: "நேரம்"
+        Time: "நேரம்",
+        Credited: "கிரெடிட் செய்யப்பட்டது",
+        Debited: "டெபிட் செய்யப்பட்டது"
         
     },
     esp: {
@@ -194,7 +200,9 @@ const lang = {
         ReceiverId: "ID del receptor",
         AmountIn: "Cantidad en",
         TransactionId: "ID de transacción",
-        Time: "Hora"
+        Time: "Hora",
+        Credited: "Acreditado",
+        Debited: "Debitado"
         
     },
     jpn: {
@@ -244,7 +252,9 @@ const lang = {
         ReceiverId: "受信者ID",
         AmountIn: "金額",
         TransactionId: "取引ID",
-        Time: "時間"
+        Time: "時間",
+        Credited: "入金済み",
+        Debited: "引き落とし済み"
     }
 };
 
