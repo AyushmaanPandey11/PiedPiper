@@ -40,13 +40,32 @@ const getUserBalance = asyncHandler(async (req, res) => {
 });
 
 
-const updateBalance = async function(userId, newBalance) {
+// const updateBalance = async function(userId, newBalance) {
+//     try {
+//         // Update the balance in the Balance collection
+//         const updatedBalance = await Balance.findOneAndUpdate(
+//             { user: new mongoose.Types.ObjectId(userId) },
+//             { accountBalance: newBalance },
+//             { new: true, runValidators: true } // Return the updated document and run validators
+//         );
+
+//         // Check if user exists
+//         if (!updatedBalance) {
+//             throw new ApiError(400, "User not found");
+//         }
+
+//         return updatedBalance.accountBalance;
+//     } catch (error) {
+//         throw new ApiError(400, "Error in updating the user account Balance");
+//     }
+// };
+const updateBalance = async function(userId, newBalance, session) {
     try {
-        // Update the balance in the Balance collection
+        // Update the balance in the Balance collection within the session
         const updatedBalance = await Balance.findOneAndUpdate(
             { user: new mongoose.Types.ObjectId(userId) },
             { accountBalance: newBalance },
-            { new: true, runValidators: true } // Return the updated document and run validators
+            { new: true, runValidators: true, session } // Return the updated document, run validators, and use the session
         );
 
         // Check if user exists
@@ -56,7 +75,7 @@ const updateBalance = async function(userId, newBalance) {
 
         return updatedBalance.accountBalance;
     } catch (error) {
-        throw new ApiError(400, "Error in updating the user account Balance");
+        throw new ApiError(400, "Error in updating the user account balance");
     }
 };
 
@@ -80,23 +99,43 @@ const getBalance = async function(userId) {
     }
 };
 
-const addTransactionDetails = async function(senderId, receiverId, amount, reason,initialCurrency,initialAmount) {
-    try {
-        // Create a ntransaction document
+// const addTransactionDetails = async function(senderId, receiverId, amount, reason,initialCurrency,initialAmount) {
+//     try {
+//         // Create a ntransaction document
         
+//         const newTransaction = new Transaction({
+//             sender: senderId,
+//             receiver: receiverId,
+//             amount: amount,
+//             initialAmount:initialAmount,
+//             initialCurrency:initialCurrency,
+//             reason: reason, 
+//         });
+
+//         // Save the transactionn
+
+      
+//         await newTransaction.save();
+
+//         return newTransaction;
+//     } catch (error) {
+//         throw new ApiError(500, "Error in adding the transaction details");
+//     }
+// };
+const addTransactionDetails = async function(senderId, receiverId, amount, reason, initialCurrency, initialAmount, session) {
+    try {
+        // Create a new transaction document
         const newTransaction = new Transaction({
             sender: senderId,
             receiver: receiverId,
             amount: amount,
-            initialAmount:initialAmount,
-            initialCurrency:initialCurrency,
+            initialAmount: initialAmount,
+            initialCurrency: initialCurrency,
             reason: reason, 
         });
 
-        // Save the transactionn
-
-      
-        await newTransaction.save();
+        // Save the transaction within the session
+        await newTransaction.save({ session });
 
         return newTransaction;
     } catch (error) {
