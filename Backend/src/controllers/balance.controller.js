@@ -106,67 +106,148 @@ const addTransactionDetails = async function(senderId, receiverId, amount, reaso
 
 
 
-const makeTransaction = asyncHandler(async (req, res) => {
-    const { receiver, amount, initialCurrency, reason, pin, } = req.body;
-    const senderId = req.user?._id;
-    if (!(receiver && senderId && amount && initialCurrency && reason && pin)) {
-        throw new ApiError(400, "Please enter all the details");
-    }
+// const makeTransaction = asyncHandler(async (req, res) => {
+//     const { receiver, amount, initialCurrency, reason, pin, } = req.body;
+//     const senderId = req.user?._id;
+//     if (!(receiver && senderId && amount && initialCurrency && reason && pin)) {
+//         throw new ApiError(400, "Please enter all the details");
+//     }
 
-    // Fetch the user from the database
-    const sender = await User.findById(senderId);
-    if (!sender) {
-        throw new ApiError(404, "Sender not found");
-    }
+//     // Fetch the user from the database
+//     const sender = await User.findById(senderId);
+//     if (!sender) {
+//         throw new ApiError(404, "Sender not found");
+//     }
 
-    // Verify the pin
-    const isPinCorrect = await sender.isPinCorrect(pin);
-    if (!isPinCorrect) {
-        throw new ApiError(400, "Incorrect transaction pin");
-    }
+//     // Verify the pin
+//     const isPinCorrect = await sender.isPinCorrect(pin);
+//     if (!isPinCorrect) {
+//         throw new ApiError(400, "Incorrect transaction pin");
+//     }
 
-    const receiverId = await getUserId(receiver);
-    const senderBalance = await getBalance(senderId);
-    const receiverBalance = await getBalance(receiverId);
-    let updateBalanceSender;
-    let updateBalanceReceiver;
-    let convertedAmount;
+//     const receiverId = await getUserId(receiver);
+//     const senderBalance = await getBalance(senderId);
+//     const receiverBalance = await getBalance(receiverId);
+//     let updateBalanceSender;
+//     let updateBalanceReceiver;
+//     let convertedAmount;
 
-    if (initialCurrency === "USD") {
-        if (senderBalance - amount < 0) {
-            throw new ApiError(400, "Transaction not possible. Insufficient Balance");
-        }
-        updateBalanceSender = senderBalance - Number(amount);
-    } else {
-        const response = await axios.get(`${CURRENCY_API_URI}/${String(initialCurrency)}/USD`);
-        const conversionRate = response?.data?.conversion_rate;
-        convertedAmount = amount * conversionRate;
-        if (senderBalance - convertedAmount < 0) {
-            throw new ApiError(400, "Transaction not possible. Insufficient Balance");
-        }
-        updateBalanceSender = senderBalance - Number(convertedAmount);
-    }
+//     if (initialCurrency === "USD") {
+//         if (senderBalance - amount < 0) {
+//             throw new ApiError(400, "Transaction not possible. Insufficient Balance");
+//         }
+//         updateBalanceSender = senderBalance - Number(amount);
+//     } else {
+//         const response = await axios.get(`${CURRENCY_API_URI}/${String(initialCurrency)}/USD`);
+//         const conversionRate = response?.data?.conversion_rate;
+//         convertedAmount = amount * conversionRate;
+//         if (senderBalance - convertedAmount < 0) {
+//             throw new ApiError(400, "Transaction not possible. Insufficient Balance");
+//         }
+//         updateBalanceSender = senderBalance - Number(convertedAmount);
+//     }
 
-    // Update sender balance
-    const updatedSenderBal = await updateBalance(senderId, updateBalanceSender);
+//     // Update sender balance
+//     const updatedSenderBal = await updateBalance(senderId, updateBalanceSender);
     
-    // Update receiver balance
-    updateBalanceReceiver = (initialCurrency === "USD") 
-        ? (Number(receiverBalance) + Number(amount)) 
-        : (Number(receiverBalance) + Number(convertedAmount));
-    const updatedReceiverBal = await updateBalance(receiverId, updateBalanceReceiver);
+//     // Update receiver balance
+//     updateBalanceReceiver = (initialCurrency === "USD") 
+//         ? (Number(receiverBalance) + Number(amount)) 
+//         : (Number(receiverBalance) + Number(convertedAmount));
+//     const updatedReceiverBal = await updateBalance(receiverId, updateBalanceReceiver);
         
-    // Check if balances are updated successfully
-    if (updatedSenderBal !== updateBalanceSender || updatedReceiverBal !== updateBalanceReceiver) {
-        throw new ApiError(500, "Error in updating balance");
-    }
+//     // Check if balances are updated successfully
+//     if (updatedSenderBal !== updateBalanceSender || updatedReceiverBal !== updateBalanceReceiver) {
+//         throw new ApiError(500, "Error in updating balance");
+//     }
 
-    // Add transaction details only if balances are updated successfully
-    const transactionAmount = initialCurrency === "USD" ? amount : convertedAmount;
-    const details = await addTransactionDetails(senderId,receiverId,transactionAmount,reason,initialCurrency,amount);
-    return res
-        .status(200)
-        .json(new ApiResponse(200, details ,"Transaction Successful"));    
+//     // Add transaction details only if balances are updated successfully
+//     const transactionAmount = initialCurrency === "USD" ? amount : convertedAmount;
+//     const details = await addTransactionDetails(senderId,receiverId,transactionAmount,reason,initialCurrency,amount);
+//     return res
+//         .status(200)
+//         .json(new ApiResponse(200, details ,"Transaction Successful"));    
+// });
+
+
+const makeTransaction = asyncHandler(async (req, res) => {
+    // Starting the transaction session before the algorithm
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    
+    try {
+        const { receiver, amount, initialCurrency, reason, pin } = req.body;
+        const senderId = req.user?._id;
+        if (!(receiver && senderId && amount && initialCurrency && reason && pin)) {
+            throw new ApiError(400, "Please enter all the details");
+        }
+
+        // Fetch the user from the database
+        const sender = await User.findById(senderId).session(session);
+        if (!sender) {
+            throw new ApiError(404, "Sender not found");
+        }
+
+        // Verify the pin
+        const isPinCorrect = await sender.isPinCorrect(pin);
+        if (!isPinCorrect) {
+            throw new ApiError(400, "Incorrect transaction pin");
+        }
+
+        const receiverId = await getUserId(receiver);
+        const senderBalance = await getBalance(senderId);
+        const receiverBalance = await getBalance(receiverId);
+        let updateBalanceSender;
+        let updateBalanceReceiver;
+        let convertedAmount;
+
+        if (initialCurrency === "USD") {
+            if (senderBalance - amount < 0) {
+                throw new ApiError(400, "Transaction not possible. Insufficient Balance");
+            }
+            updateBalanceSender = senderBalance - Number(amount);
+        } else {
+            const response = await axios.get(`${CURRENCY_API_URI}/${String(initialCurrency)}/USD`);
+            const conversionRate = response?.data?.conversion_rate;
+            convertedAmount = amount * conversionRate;
+            if (senderBalance - convertedAmount < 0) {
+                throw new ApiError(400, "Transaction not possible. Insufficient Balance");
+            }
+            updateBalanceSender = senderBalance - Number(convertedAmount);
+        }
+
+        // Update sender balance
+        const updatedSenderBal = await updateBalance(senderId, updateBalanceSender, session);
+
+        // Update receiver balance
+        updateBalanceReceiver = (initialCurrency === "USD") 
+            ? (Number(receiverBalance) + Number(amount)) 
+            : (Number(receiverBalance) + Number(convertedAmount));
+        const updatedReceiverBal = await updateBalance(receiverId, updateBalanceReceiver, session);
+        
+        // Check if balances are updated successfully
+        if (updatedSenderBal !== updateBalanceSender || updatedReceiverBal !== updateBalanceReceiver) {
+            throw new ApiError(500, "Error in updating balance");
+        }
+
+        // Add transaction details only if balances are updated successfully
+        const transactionAmount = initialCurrency === "USD" ? amount : convertedAmount;
+        const details = await addTransactionDetails(senderId, receiverId, transactionAmount, reason, initialCurrency, amount, session);
+        
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, details, "Transaction Successful"));
+
+    } catch (error) {
+        // If any error occurs, abort the transaction
+        await session.abortTransaction();
+        session.endSession();
+        throw error;
+    }
 });
 
 

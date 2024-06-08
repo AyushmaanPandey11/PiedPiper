@@ -117,8 +117,9 @@ const Login = () => {
         </div>
         <form
           onSubmit={(e) => e.preventDefault()}
-          className='w-3/12 p-12 mt-5 text-white bg-black bg-opacity-75 mx-auto rounded-md'>
+          className='w-4/12 p-12 mt-5 text-white bg-black bg-opacity-75 mx-auto rounded-md'>
           <h1 className='font-bold text-3xl py-4'>{isSignIn ? lang[langKey].SignIn : lang[langKey].SignUp}</h1>
+          {isSignIn && <p>Try: username: user123 & password: User@12345</p>}
           <input ref={username} className='my-6 p-4 w-full bg-gray-600 ' type='text' placeholder={lang[langKey].EnterYourName} />
           {isSignIn && <p className='ml-[45%] font-bold'>Or</p>}
           <input
