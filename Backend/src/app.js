@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import userRouter from './routes/user.routes.js'
 import transactionRouter from "./routes/transaction.routes.js";
 import balanceRouter from "./routes/balance.routes.js";
+import { securePaymentRouter } from "./routes/securePayment.routes.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/api/v1/accbalance", balanceRouter);
 // 3. Transaction details routes
 app.use("/api/v1/transactionHistory", transactionRouter);
 
+app.use("/api/v2/secureTransaction",securePaymentRouter);
 
 
 // 
