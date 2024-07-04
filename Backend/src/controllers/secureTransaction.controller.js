@@ -1,11 +1,12 @@
 import axios from "axios";
-import { Balance } from "../models/balance.model";
-import { Transaction } from "../models/transaction.model";
-import { User } from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { getBalance } from "./balance.controller";
-import { getUserId } from "./user.controller";
+import { Balance } from "../models/balance.model.js";
+import { Transaction } from "../models/transaction.model.js";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { getBalance } from "./balance.controller.js";
+import { getUserId } from "./user.controller.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const updateBalanceSecured = async function(userId, newBalance, session) {
     try {

@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware";
-import { makeTransactionSecured } from "../controllers/secureTransaction.controller";
-
+import { makeTransactionSecured } from "../controllers/secureTransaction.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 
 const securePaymentRouter = Router();
